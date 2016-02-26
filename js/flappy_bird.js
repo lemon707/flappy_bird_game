@@ -17,7 +17,7 @@ FlappyBird.prototype.repeater = function() {
   var that = this; //this is what solves the whole problem - lexical scoping
   arr.forEach(function(p){
     that.entities.push(p);
-  })
+  });
 };
 
 FlappyBird.prototype.run = function() {

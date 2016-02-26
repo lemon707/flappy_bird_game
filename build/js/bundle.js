@@ -1,4 +1,106 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+var CircleCollisionComponent = function(entity, radius) {
+  this.entity = entity;
+  this.radius = radius;
+  this.type = 'circle';
+};
+
+CircleCollisionComponent.prototype.collidesWith = function(entity) {
+  if(entity.components.collision.type === 'circle') {
+    return this.collideCircle(entity);
+  } else if(entity.components.collision.type === 'rect') {
+    return this.collideCircle(entity);
+  }
+  return false;
+};
+
+CircleCollisionComponent.prototype.collideCircle = function(entity) {
+  var positionA = this.entity.components.physics.position;
+  var positionB = entity.components.physics.position;
+
+  var radiusA = this.radius;
+  var radiusB = entity.components.collision.raidus;
+
+  var diff = {x: positionA.x - positionB.x,
+    y: positionA.y - positionB.y};
+
+  var distanceSquared = diff.x * diff.x + diff.y * diff.y;
+  var radiusSum = radiusA + radiusB;
+
+  return distanceSquared < radiusSum * radiusSum;
+};
+
+CircleCollisionComponent.prototype.collideRect = function(entity) {
+  var clamp = function(value, low, high) {
+    if(value < low) {
+      return low;
+    }
+    if(value > high) {
+      return high;
+    }
+    return value;
+  };
+
+  var positionA = this.entity.components.physics.position;
+  var positionB = entity.components.physics.position;
+  var sizeB = entity.components.collision.size;
+
+  var closest = {
+    x: clamp(positionA.x, positionB.x - sizeB.x / 2, positionB.x + sizeB.x / 2),
+    y: clamp(positionA.y, positionB.y - sizeB.y / 2, positionB.y + sizeB.y / 2)
+  };
+
+  var radiusA = this.radius;
+
+  var diff = {x: positionA.x - closest.x, y:positionA.y - closest.y};
+
+  var distanceSquared = diff.x * diff.x + diff.y * diff.y;
+  return distanceSquared < radiusA * radiusA;
+};
+
+exports.CircleCollisionComponent = CircleCollisionComponent;
+},{}],2:[function(require,module,exports){
+var RectCollisionComponent = function(entity, size) {
+  this.entity = entity;
+  this.size = size;
+  this.type = 'rect';
+};
+
+RectCollisionComponent.prototype.collidesWith = function(entity) {
+  if(entity.components.collision.type === 'circle') {
+    return this.collideCircle(entity);
+  } else if(entity.components.collision.type === 'rect') {
+    return this.collideRect(entity);
+  }
+  return false;
+};
+
+RectCollisionComponent.prototype.collideCircle = function(entity) {
+  return entity.components.collision.collideRect(this.entity);
+};
+
+RectCollisionComponent.prototype.collideRect = function(entity) {
+  var positionA = this.entity.components.physics.position;
+  var positionB = entity.components.physics.position;
+
+  var sizeA = this.size;
+  var sizeB = entity.components.collision.size;
+
+  var leftA = positionA.x - sizeA.x / 2;
+  var rightA = positionA.x + sizeA.x / 2;
+  var bottomA = positionA.y - sizeA.y / 2;
+  var topA = positionA.y + sizeA.y / 2;
+
+  var leftB = positionB.x - sizeB.x / 2;
+  var rightB = positionB.x - sizeB.x / 2;
+  var bottomB = positionB.y - sizeB.y / 2;
+  var topB = positionB.y + sizeB.y / 2;
+
+  return !(leftA > rightB || leftB > rightA || bottomA > topB || bottomB > topA);
+};
+
+exports.RectCollisionComponent = RectCollisionComponent;
+},{}],3:[function(require,module,exports){
 var BirdGraphicsComponent = function(entity) {
   this.entity = entity;
 };
@@ -17,7 +119,7 @@ BirdGraphicsComponent.prototype.draw = function(context) {
 };
 
 exports.BirdGraphicsComponent = BirdGraphicsComponent;
-},{}],2:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 var PipeGraphicsComponent = function(entity) {
   this.entity = entity;
 };
@@ -35,7 +137,7 @@ PipeGraphicsComponent.prototype.draw = function(context) {
 };
 
 exports.PipeGraphicsComponent = PipeGraphicsComponent;
-},{}],3:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 var PhysicsComponent = function(entity) {
   this.entity = entity;
 
@@ -64,9 +166,11 @@ PhysicsComponent.prototype.update = function(delta) {
 };
 
 exports.PhysicsComponent = PhysicsComponent;
-},{}],4:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 var graphicsComponent = require("../components/graphics/bird");
 var physicsComponent = require("../components/physics/physics");
+var collisionComponent = require("../components/collision/circle");
+var settings = require("../settings");
 
 var Bird = function() {
   var physics = new physicsComponent.PhysicsComponent(this);
@@ -74,35 +178,52 @@ var Bird = function() {
   physics.acceleration.y = -2;
 
   var graphics = new graphicsComponent.BirdGraphicsComponent(this);
+  var collision = new collisionComponent.CircleCollisionComponent(this, 0.02);
+  collision.onCollision = this.onCollision.bind(this);
   
   this.components = {
     graphics: graphics,
-    physics: physics
+    physics: physics,
+    collision: collision
   };
 };
 
+Bird.prototype.onCollision = function(entity) {
+  console.log("Bird collided with entity: ", entity);
+};
+
 exports.Bird = Bird;
-},{"../components/graphics/bird":1,"../components/physics/physics":3}],5:[function(require,module,exports){
+},{"../components/collision/circle":1,"../components/graphics/bird":3,"../components/physics/physics":5,"../settings":10}],7:[function(require,module,exports){
 var graphicsComponent = require("../components/graphics/pipe");
 var physicsComponent = require("../components/physics/physics");
+var collisionComponent = require("../components/collision/rect");
+var settings = require("../settings");
 
 var Pipe = function(coord) {
   var physics = new physicsComponent.PhysicsComponent(this);
   physics.position.x = coord.x;
   physics.position.y = coord.y;
-  physics.acceleration.x = -0.1;
+  physics.velocity.x = -0.5;
+  physics.acceleration.x = -0.5;
 
   var graphics = new graphicsComponent.PipeGraphicsComponent(this);
-  
+  var collision = new collisionComponent.RectCollisionComponent(this, 0.3);
+  collision.onCollision = this.onCollision.bind(this);
+
   this.components = {
     graphics: graphics,
-    physics: physics
+    physics: physics,
+    collision: collision
   };
+};
+
+Pipe.prototype.onCollision = function(entity) {
+  console.log("Pipe collided with entity: ", entity);
 };
 
 exports.Pipe = Pipe;
 
-},{"../components/graphics/pipe":2,"../components/physics/physics":3}],6:[function(require,module,exports){
+},{"../components/collision/rect":2,"../components/graphics/pipe":4,"../components/physics/physics":5,"../settings":10}],8:[function(require,module,exports){
 var graphicsSystem = require('./systems/graphics');
 var physicsSystem = require('./systems/physics');
 var inputSystem = require('./systems/input');
@@ -122,7 +243,7 @@ FlappyBird.prototype.repeater = function() {
   var that = this; //this is what solves the whole problem - lexical scoping
   arr.forEach(function(p){
     that.entities.push(p);
-  })
+  });
 };
 
 FlappyBird.prototype.run = function() {
@@ -133,7 +254,7 @@ FlappyBird.prototype.run = function() {
 };
 
 exports.FlappyBird = FlappyBird;
-},{"./entities/bird":4,"./entities/pipe":5,"./systems/graphics":8,"./systems/input":9,"./systems/physics":10}],7:[function(require,module,exports){
+},{"./entities/bird":6,"./entities/pipe":7,"./systems/graphics":12,"./systems/input":13,"./systems/physics":14}],9:[function(require,module,exports){
 var flappyBird = require('./flappy_bird');
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -141,7 +262,39 @@ document.addEventListener('DOMContentLoaded', function() {
   app.run();
 });
 
-},{"./flappy_bird":6}],8:[function(require,module,exports){
+},{"./flappy_bird":8}],10:[function(require,module,exports){
+
+},{}],11:[function(require,module,exports){
+var CollisionSystem = function(entities) {
+  this.entities = entities;
+};
+
+CollisionSystem.prototype.tick = function() {
+  for(var i = 0; i < this.entities.length; i += 1) {
+    var entityA = this.entities[i];
+    if(!'collision' in entityA.components) {
+      continue;
+    }
+    for(var j = i + 1; j < this.entities.length; j += 1) {
+      var entityB = this.entities[j];
+      if(!'collision' in entityB.components) {
+        continue;
+      }
+      if(!entityA.components.collision.collidesWith(entityB)) {
+        continue;
+      }
+      if(entityA.components.collision.onCollision) {
+        entityA.components.collision.onCollision(entityB);
+      }
+      if(entityB.components.collision.onCollision) {
+        entityB.components.collision.onCollision(entityA);
+      }
+    }
+  }
+};
+
+exports.CollisionSystem = CollisionSystem;
+},{}],12:[function(require,module,exports){
 var GraphicsSystem = function(entities) {
   this.entities = entities;
   this.canvas = document.getElementById('main-canvas');
@@ -181,7 +334,7 @@ GraphicsSystem.prototype.tick = function() {
 };
 
 exports.GraphicsSystem = GraphicsSystem;
-},{}],9:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 var InputSystem = function(entities) {
   this.entities = entities;
   this.canvas = document.getElementById('main-canvas');
@@ -207,9 +360,12 @@ InputSystem.prototype.onClickMobile = function(e) {
 
 exports.InputSystem = InputSystem;
 
-},{}],10:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
+var collisionSystem = require('./collision');
+
 var PhysicsSystem = function(entities) {
   this.entities = entities;
+  this.collisionSystem = new collisionSystem.CollisionSystem(entities);
 };
 
 PhysicsSystem.prototype.run = function() {
@@ -225,7 +381,9 @@ PhysicsSystem.prototype.tick = function() {
 
     entity.components.physics.update(1/60);
   }
+  
+  this.collisionSystem.tick();
 };
 
 exports.PhysicsSystem = PhysicsSystem;
-},{}]},{},[7]);
+},{"./collision":11}]},{},[9]);
