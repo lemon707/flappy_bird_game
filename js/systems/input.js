@@ -15,7 +15,7 @@ InputSystem.prototype.onClick = function() {
 
 InputSystem.prototype.onClickMobile = function(e) {
   e.preventDefault();
-  console.log('touched')
+  console.log('touched');
   
   var bird = this.entities[0];
   bird.components.physics.velocity.y = 0.3;

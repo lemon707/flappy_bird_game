@@ -18,6 +18,24 @@ BirdGraphicsComponent.prototype.draw = function(context) {
 
 exports.BirdGraphicsComponent = BirdGraphicsComponent;
 },{}],2:[function(require,module,exports){
+var PipeGraphicsComponent = function(entity) {
+  this.entity = entity;
+};
+
+PipeGraphicsComponent.prototype.draw = function(context) {
+  var position = this.entity.components.physics.position;
+
+  context.save();
+  context.translate(position.x, position.y);
+  context.beginPath();
+  context.rect(0, 0, 0.3, 0.3);
+  context.fill();
+  context.closePath();
+  context.restore();
+};
+
+exports.PipeGraphicsComponent = PipeGraphicsComponent;
+},{}],3:[function(require,module,exports){
 var PhysicsComponent = function(entity) {
   this.entity = entity;
 
@@ -46,7 +64,7 @@ PhysicsComponent.prototype.update = function(delta) {
 };
 
 exports.PhysicsComponent = PhysicsComponent;
-},{}],3:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 var graphicsComponent = require("../components/graphics/bird");
 var physicsComponent = require("../components/physics/physics");
 
@@ -64,28 +82,58 @@ var Bird = function() {
 };
 
 exports.Bird = Bird;
-},{"../components/graphics/bird":1,"../components/physics/physics":2}],4:[function(require,module,exports){
+},{"../components/graphics/bird":1,"../components/physics/physics":3}],5:[function(require,module,exports){
+var graphicsComponent = require("../components/graphics/pipe");
+var physicsComponent = require("../components/physics/physics");
+
+var Pipe = function(coord) {
+  var physics = new physicsComponent.PhysicsComponent(this);
+  physics.position.x = coord.x;
+  physics.position.y = coord.y;
+  physics.acceleration.x = -0.1;
+
+  var graphics = new graphicsComponent.PipeGraphicsComponent(this);
+  
+  this.components = {
+    graphics: graphics,
+    physics: physics
+  };
+};
+
+exports.Pipe = Pipe;
+
+},{"../components/graphics/pipe":2,"../components/physics/physics":3}],6:[function(require,module,exports){
 var graphicsSystem = require('./systems/graphics');
 var physicsSystem = require('./systems/physics');
 var inputSystem = require('./systems/input');
 
 var bird = require('./entities/bird');
+var pipe = require('./entities/pipe');
 
 var FlappyBird = function() {
-  this.entities = [new bird.Bird()];
+  this.entities = [new bird.Bird(), new pipe.Pipe({x:0.7,y:0}), new pipe.Pipe({x:0.7,y:0.7})];
   this.graphics = new graphicsSystem.GraphicsSystem(this.entities);
   this.physics = new physicsSystem.PhysicsSystem(this.entities);
   this.input = new inputSystem.InputSystem(this.entities);
+};
+
+FlappyBird.prototype.repeater = function() {
+  var arr = [new pipe.Pipe({x:0.7,y:0}), new pipe.Pipe({x:0.7,y:0.7})];
+  var that = this; //this is what solves the whole problem - lexical scoping
+  arr.forEach(function(p){
+    that.entities.push(p);
+  })
 };
 
 FlappyBird.prototype.run = function() {
   this.graphics.run();
   this.physics.run();
   this.input.run();
+  window.setInterval(this.repeater.bind(this), 2000);
 };
 
 exports.FlappyBird = FlappyBird;
-},{"./entities/bird":3,"./systems/graphics":6,"./systems/input":7,"./systems/physics":8}],5:[function(require,module,exports){
+},{"./entities/bird":4,"./entities/pipe":5,"./systems/graphics":8,"./systems/input":9,"./systems/physics":10}],7:[function(require,module,exports){
 var flappyBird = require('./flappy_bird');
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -93,7 +141,7 @@ document.addEventListener('DOMContentLoaded', function() {
   app.run();
 });
 
-},{"./flappy_bird":4}],6:[function(require,module,exports){
+},{"./flappy_bird":6}],8:[function(require,module,exports){
 var GraphicsSystem = function(entities) {
   this.entities = entities;
   this.canvas = document.getElementById('main-canvas');
@@ -133,7 +181,7 @@ GraphicsSystem.prototype.tick = function() {
 };
 
 exports.GraphicsSystem = GraphicsSystem;
-},{}],7:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 var InputSystem = function(entities) {
   this.entities = entities;
   this.canvas = document.getElementById('main-canvas');
@@ -141,6 +189,7 @@ var InputSystem = function(entities) {
 
 InputSystem.prototype.run = function() {
   this.canvas.addEventListener('click', this.onClick.bind(this));
+  this.canvas.addEventListener('touchstart', this.onClickMobile.bind(this));
 };
 
 InputSystem.prototype.onClick = function() {
@@ -148,9 +197,17 @@ InputSystem.prototype.onClick = function() {
   bird.components.physics.velocity.y = 0.7;
 };
 
+InputSystem.prototype.onClickMobile = function(e) {
+  e.preventDefault();
+  console.log('touched');
+  
+  var bird = this.entities[0];
+  bird.components.physics.velocity.y = 0.3;
+};
+
 exports.InputSystem = InputSystem;
 
-},{}],8:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 var PhysicsSystem = function(entities) {
   this.entities = entities;
 };
@@ -171,4 +228,4 @@ PhysicsSystem.prototype.tick = function() {
 };
 
 exports.PhysicsSystem = PhysicsSystem;
-},{}]},{},[5]);
+},{}]},{},[7]);
