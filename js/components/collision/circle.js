@@ -8,7 +8,7 @@ CircleCollisionComponent.prototype.collidesWith = function(entity) {
   if(entity.components.collision.type === 'circle') {
     return this.collideCircle(entity);
   } else if(entity.components.collision.type === 'rect') {
-    return this.collideCircle(entity);
+    return this.collideRect(entity);
   }
   return false;
 };

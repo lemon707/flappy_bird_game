@@ -21,6 +21,10 @@ var Bird = function() {
 
 Bird.prototype.onCollision = function(entity) {
   console.log("Bird collided with entity: ", entity);
+  //reset bird position to center
+  this.components.physics.position.x = 0;
+  this.components.physics.position.y = 0;
+  
 };
 
 exports.Bird = Bird;

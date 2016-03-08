@@ -7,8 +7,8 @@ var Pipe = function(coord) {
   var physics = new physicsComponent.PhysicsComponent(this);
   physics.position.x = coord.x;
   physics.position.y = coord.y;
-  physics.velocity.x = -0.5;
-  physics.acceleration.x = -0.5;
+  physics.velocity.x = -0.1;
+  physics.acceleration.x = -0.1;
 
   var graphics = new graphicsComponent.PipeGraphicsComponent(this);
   var collision = new collisionComponent.RectCollisionComponent(this, 0.3);
@@ -23,6 +23,9 @@ var Pipe = function(coord) {
 
 Pipe.prototype.onCollision = function(entity) {
   console.log("Pipe collided with entity: ", entity);
+  //remove all current pipes
+  
+
 };
 
 exports.Pipe = Pipe;
