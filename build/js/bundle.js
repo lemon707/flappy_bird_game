@@ -9,7 +9,7 @@ CircleCollisionComponent.prototype.collidesWith = function(entity) {
   if(entity.components.collision.type === 'circle') {
     return this.collideCircle(entity);
   } else if(entity.components.collision.type === 'rect') {
-    return this.collideCircle(entity);
+    return this.collideRect(entity);
   }
   return false;
 };
@@ -92,9 +92,10 @@ RectCollisionComponent.prototype.collideRect = function(entity) {
   var topA = positionA.y + sizeA.y / 2;
 
   var leftB = positionB.x - sizeB.x / 2;
-  var rightB = positionB.x - sizeB.x / 2;
+  var rightB = positionB.x + sizeB.x / 2;
   var bottomB = positionB.y - sizeB.y / 2;
   var topB = positionB.y + sizeB.y / 2;
+  // console.log('leftA',leftA,'topA', topA, 'bottomA', bottomA, 'rightA', rightA)
 
   return !(leftA > rightB || leftB > rightA || bottomA > topB || bottomB > topA);
 };
@@ -106,6 +107,7 @@ var BirdGraphicsComponent = function(entity) {
 };
 
 BirdGraphicsComponent.prototype.draw = function(context) {
+  // var position = {x: 0, y: 0.5}
   var position = this.entity.components.physics.position;
   
   context.save();
@@ -114,6 +116,8 @@ BirdGraphicsComponent.prototype.draw = function(context) {
   context.arc(0, 0, 0.02, 0, 2 * Math.PI);
   context.fill();
   context.closePath();
+  context.fillStyle = 'red';
+  context.fillRect(0,0,0.005,0.005);
   context.restore();
 
 };
@@ -126,13 +130,14 @@ var PipeGraphicsComponent = function(entity) {
 
 PipeGraphicsComponent.prototype.draw = function(context) {
   var position = this.entity.components.physics.position;
-
   context.save();
   context.translate(position.x, position.y);
   context.beginPath();
   context.rect(0, 0, 0.3, 0.3);
   context.fill();
   context.closePath();
+  context.fillStyle = 'red';
+  context.fillRect(0,0,0.01,0.01);
   context.restore();
 };
 
@@ -171,11 +176,13 @@ var graphicsComponent = require("../components/graphics/bird");
 var physicsComponent = require("../components/physics/physics");
 var collisionComponent = require("../components/collision/circle");
 var settings = require("../settings");
+  var trigger = false;
 
-var Bird = function() {
+var Bird = function(coord) {
   var physics = new physicsComponent.PhysicsComponent(this);
+  physics.position.x = coord.x;
   physics.position.y = 0.5;
-  physics.acceleration.y = -2;
+  // physics.acceleration.y = -2;
 
   var graphics = new graphicsComponent.BirdGraphicsComponent(this);
   var collision = new collisionComponent.CircleCollisionComponent(this, 0.02);
@@ -189,10 +196,19 @@ var Bird = function() {
 };
 
 Bird.prototype.onCollision = function(entity) {
-  console.log("Bird collided with entity: ", entity);
-  //reset bird position to center
-  this.components.physics.position.x = 0;
-  this.components.physics.position.y = 0;
+  // console.log('bird position.x',this.components.physics.position.x)
+  // trigger = false;
+  if(trigger === false) {
+  console.log("pipe.position.x: ", entity.components.physics.position.x);
+  console.log("pipe.position.y: ", entity.components.physics.position.y);
+  console.log('bird position.y',this.components.physics.position.y)
+    console.log('trigger false!')
+    trigger = true;
+  }
+  // console.log('bird position.y',this.components.physics.position.y)
+  // //reset bird position to center
+  // this.components.physics.position.x = 0;
+  // this.components.physics.position.y = 0;
   
 };
 
@@ -205,13 +221,17 @@ var settings = require("../settings");
 
 var Pipe = function(coord) {
   var physics = new physicsComponent.PhysicsComponent(this);
+  var width = 0.3;
+  var height = 0.3;
   physics.position.x = coord.x;
   physics.position.y = coord.y;
-  physics.velocity.x = -0.1;
-  physics.acceleration.x = -0.1;
-
+  physics.size = {
+    x: physics.position.x + width/2,
+    y: physics.position.y + height/2
+  };
+  physics.velocity.x = -0.5;
   var graphics = new graphicsComponent.PipeGraphicsComponent(this);
-  var collision = new collisionComponent.RectCollisionComponent(this, 0.3);
+  var collision = new collisionComponent.RectCollisionComponent(this, physics.size);
   collision.onCollision = this.onCollision.bind(this);
 
   this.components = {
@@ -222,7 +242,8 @@ var Pipe = function(coord) {
 };
 
 Pipe.prototype.onCollision = function(entity) {
-  console.log("Pipe collided with entity: ", entity);
+  // console.log('bird.position.y: ',entity.components.physics.position.y)
+  // console.log("Pipe collided with entity: ", entity);
   //remove all current pipes
   
 
@@ -250,7 +271,7 @@ var Plate = function(coord) {
 };
 
 Plate.prototype.onCollision = function(entity) {
-  console.log("Plate collided with entity: ", entity);
+  // console.log("Plate collided with entity: ", entity);
   //reset bird position, remove current pipes
   
 
@@ -277,7 +298,7 @@ var Wall = function(coord) {
 };
 
 Wall.prototype.onCollision = function(entity) {
-  console.log("Wall collided with entity: ", entity);
+  // console.log("Wall collided with entity: ", entity);
   //remove pipe from entity array
   
 
@@ -294,15 +315,17 @@ var pipe = require('./entities/pipe');
 var plate = require('./entities/plate');
 var wall = require('./entities/wall');
 
+// new bird.Bird({x:-0.5}), 
 var FlappyBird = function() {
-  this.entities = [new wall.Wall({x:-1,y: -1}), new wall.Wall({x:1 , y:-1}), new plate.Plate({x: -1, y: 1}), new plate.Plate({x: -1, y: -1}), new bird.Bird(), new pipe.Pipe({x:0.7,y:0}), new pipe.Pipe({x:0.7,y:0.7})];
+  this.entities = [new bird.Bird({x:0}), new pipe.Pipe({x:0.7,y:0}), new pipe.Pipe({x:0.7,y:0.7})];
   this.graphics = new graphicsSystem.GraphicsSystem(this.entities);
   this.physics = new physicsSystem.PhysicsSystem(this.entities);
   this.input = new inputSystem.InputSystem(this.entities);
 };
 
+// new wall.Wall({x:-1,y: -1}), new wall.Wall({x:1 , y:-1}), new plate.Plate({x: -1, y: 1}), new plate.Plate({x: -1, y: -1}), 
 FlappyBird.prototype.repeater = function() {
-  var arr = [new pipe.Pipe({x:1.3,y:0}), new pipe.Pipe({x:1.3,y:0.7})];
+  var arr = [new pipe.Pipe({x:1,y:0}), new pipe.Pipe({x:1,y:0.7})];
   var that = this; //this is what solves the whole problem - lexical scoping
   arr.forEach(function(p){
     that.entities.push(p);
@@ -310,18 +333,19 @@ FlappyBird.prototype.repeater = function() {
 };
 
 FlappyBird.prototype.collision = function(entity) {
-  var counterToShow = 0;
-  if(pipe.onCollision(entity)) {
-    this.entities.pop();
-    counterToShow += 1;
-  }
+  // var counterToShow = 0;
+  // if(pipe.onCollision(entity)) {
+  //   this.entities.pop();
+  //   counterToShow += 1;
+  // }
 };
 
 FlappyBird.prototype.run = function() {
   this.graphics.run();
   this.physics.run();
   this.input.run();
-  window.setInterval(this.repeater.bind(this), 3000);
+  // console.log('bird position.y always',this.components.physics.position.y)
+  // window.setInterval(this.repeater.bind(this), 2000);
 };
 
 exports.FlappyBird = FlappyBird;
@@ -412,8 +436,8 @@ var InputSystem = function(entities) {
 };
 
 InputSystem.prototype.run = function() {
-  this.canvas.addEventListener('click', this.onClick.bind(this));
-  this.canvas.addEventListener('touchstart', this.onClickMobile.bind(this));
+  // this.canvas.addEventListener('click', this.onClick.bind(this));
+  // this.canvas.addEventListener('touchstart', this.onClickMobile.bind(this));
 };
 
 InputSystem.prototype.onClick = function() {
@@ -441,6 +465,8 @@ var PhysicsSystem = function(entities) {
 
 PhysicsSystem.prototype.run = function() {
   window.setInterval(this.tick.bind(this), 1000/60);
+  // var birdNotMoving = this.entities[1];
+  // birdNotMoving.components.physics.acceleration = 0;
 };
 
 PhysicsSystem.prototype.tick = function() {
@@ -457,4 +483,5 @@ PhysicsSystem.prototype.tick = function() {
 };
 
 exports.PhysicsSystem = PhysicsSystem;
+
 },{"./collision":13}]},{},[11]);

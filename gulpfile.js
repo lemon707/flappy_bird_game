@@ -51,7 +51,7 @@ gulp.task('watch', function() {
 });
 
 // Default task
-gulp.task('default', ['jshint', 'watch']);
+gulp.task('default', ['jshint', 'build', 'watch']);
 
 // Build task
 gulp.task('build', ['jshint', 'html', 'scripts', 'styles']);

@@ -3,6 +3,7 @@ var BirdGraphicsComponent = function(entity) {
 };
 
 BirdGraphicsComponent.prototype.draw = function(context) {
+  // var position = {x: 0, y: 0.5}
   var position = this.entity.components.physics.position;
   
   context.save();
@@ -11,6 +12,8 @@ BirdGraphicsComponent.prototype.draw = function(context) {
   context.arc(0, 0, 0.02, 0, 2 * Math.PI);
   context.fill();
   context.closePath();
+  context.fillStyle = 'red';
+  context.fillRect(0,0,0.005,0.005);
   context.restore();
 
 };

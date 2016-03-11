@@ -17,7 +17,7 @@ var Wall = function(coord) {
 };
 
 Wall.prototype.onCollision = function(entity) {
-  console.log("Wall collided with entity: ", entity);
+  // console.log("Wall collided with entity: ", entity);
   //remove pipe from entity array
   
 

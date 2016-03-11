@@ -17,7 +17,7 @@ var Plate = function(coord) {
 };
 
 Plate.prototype.onCollision = function(entity) {
-  console.log("Plate collided with entity: ", entity);
+  // console.log("Plate collided with entity: ", entity);
   //reset bird position, remove current pipes
   
 
