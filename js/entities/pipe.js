@@ -26,7 +26,7 @@ var Pipe = function(coord) {
 
 Pipe.prototype.onCollision = function(entity) {
   // console.log('bird.position.y: ',entity.components.physics.position.y)
-  console.log("Pipe collided with entity: ", entity);
+  // console.log("Pipe collided with entity: ", entity);
   //remove all current pipes
 
   
