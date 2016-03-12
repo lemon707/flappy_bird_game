@@ -22,7 +22,7 @@ var Bird = function(coord) {
 };
 
 Bird.prototype.onCollision = function(entity) {
-  // console.log('bird position.x',this.components.physics.position.x)
+  console.log('bird position.x',this.components.physics.position.x)
   // trigger = false;
   if(trigger === false) {
   console.log("pipe.position.x: ", entity.components.physics.position.x);
@@ -31,10 +31,9 @@ Bird.prototype.onCollision = function(entity) {
     console.log('trigger false!')
     trigger = true;
   }
-  // console.log('bird position.y',this.components.physics.position.y)
-  // //reset bird position to center
-  // this.components.physics.position.x = 0;
-  // this.components.physics.position.y = 0;
+  //reset bird position to center
+  this.components.physics.position.x = 0;
+  this.components.physics.position.y = 0.5;
   
 };
 

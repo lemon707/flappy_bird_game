@@ -7,8 +7,6 @@ var PhysicsSystem = function(entities) {
 
 PhysicsSystem.prototype.run = function() {
   window.setInterval(this.tick.bind(this), 1000/60);
-  // var birdNotMoving = this.entities[1];
-  // birdNotMoving.components.physics.acceleration = 0;
 };
 
 PhysicsSystem.prototype.tick = function() {
