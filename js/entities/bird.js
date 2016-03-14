@@ -8,7 +8,7 @@ var Bird = function(coord) {
   var physics = new physicsComponent.PhysicsComponent(this);
   physics.position.x = coord.x;
   physics.position.y = 0.5;
-  // physics.acceleration.y = -2;
+  physics.acceleration.y = -2;
 
   var graphics = new graphicsComponent.BirdGraphicsComponent(this);
   var collision = new collisionComponent.CircleCollisionComponent(this, 0.02);
@@ -22,18 +22,14 @@ var Bird = function(coord) {
 };
 
 Bird.prototype.onCollision = function(entity) {
-  console.log('bird position.x',this.components.physics.position.x)
-  // trigger = false;
-  if(trigger === false) {
-  console.log("pipe.position.x: ", entity.components.physics.position.x);
-  console.log("pipe.position.y: ", entity.components.physics.position.y);
-  console.log('bird position.y',this.components.physics.position.y)
-    console.log('trigger false!')
-    trigger = true;
+  //reset bird position to center and remove current pipes
+  if('removal' in entity.components) {
+    entity.components.removal.toBeRemoved = true;
   }
-  //reset bird position to center
   this.components.physics.position.x = 0;
   this.components.physics.position.y = 0.5;
+  this.components.physics.velocity.y = 0;
+  this.components.physics.acceleration.y = -2;
   
 };
 

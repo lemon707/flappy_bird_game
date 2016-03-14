@@ -7,10 +7,10 @@ var Plate = function(coord) {
   var physics = new physicsComponent.PhysicsComponent(this);
   var size = {
     x: 2,
-    y: 0.1
+    y: 0.01
   }
-  physics.position.x = coord.x + 1;
-  physics.position.y = coord.y + 0.05;
+  physics.position.x = coord.x + size.x / 2;
+  physics.position.y = coord.y + size.y / 2;
 
   var graphics = new graphicsComponent.PlateGraphicsComponent(this);
   var collision = new collisionComponent.RectCollisionComponent(this, size);
@@ -25,9 +25,6 @@ var Plate = function(coord) {
 
 Plate.prototype.onCollision = function(entity) {
   // console.log("Plate collided with bird: ", entity);
-  //reset bird position
-  // entity.components.physics.position.x = 0;
-  // entity.components.physics.position.y = 0.5;
 };
 
 exports.Plate = Plate;

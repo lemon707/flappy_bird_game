@@ -1,8 +1,10 @@
 var collisionSystem = require('./collision');
+var removalSystem = require('./removal');
 
 var PhysicsSystem = function(entities) {
   this.entities = entities;
   this.collisionSystem = new collisionSystem.CollisionSystem(entities);
+  this.removalSystem = new removalSystem.RemovalSystem(entities);
 };
 
 PhysicsSystem.prototype.run = function() {
@@ -20,6 +22,7 @@ PhysicsSystem.prototype.tick = function() {
   }
   
   this.collisionSystem.tick();
+  // this.removalSystem.tick();
 };
 
 exports.PhysicsSystem = PhysicsSystem;

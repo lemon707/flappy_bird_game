@@ -6,11 +6,11 @@ var settings = require("../settings");
 var Wall = function(coord) {
   var physics = new physicsComponent.PhysicsComponent(this);
   var size = {
-    x: 0.1,
+    x: 0.01,
     y: 1
   }
-  physics.position.x = coord.x + 0.05;
-  physics.position.y = coord.y + 0.5;
+  physics.position.x = coord.x + size.x / 2;
+  physics.position.y = coord.y + size.y / 2;
 
   var graphics = new graphicsComponent.WallGraphicsComponent(this);
   var collision = new collisionComponent.RectCollisionComponent(this, size);
