@@ -22,7 +22,7 @@ var Bird = function(coord) {
 
 Bird.prototype.onCollision = function(entity) {
   //reset bird position to center and remove current pipes
-  if(entity.type === 'pipe') {
+  if(entity.components.hasOwnProperty('removal')) {
     entity.components.removal.toRemoveAllOfType = true;
   }
   this.components.physics.position.x = 0;

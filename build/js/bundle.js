@@ -242,7 +242,7 @@ var Bird = function(coord) {
 
 Bird.prototype.onCollision = function(entity) {
   //reset bird position to center and remove current pipes
-  if(entity.type === 'pipe') {
+  if(entity.components.hasOwnProperty('removal')) {
     entity.components.removal.toRemoveAllOfType = true;
   }
   this.components.physics.position.x = 0;
@@ -535,28 +535,20 @@ var RemovalSystem = function(entities) {
 RemovalSystem.prototype.tick = function() {
   for(var i = 0; i < this.entities.length; i += 1) {
       var entity = this.entities[i];
-      // debugger;
       if(!entity.components.hasOwnProperty('removal')) {
-      // if(!'removal' in entity.components) {
         continue;
       }
-
       if(entity.components.removal.toRemoveAllOfType === true) {
-        // delete this.entities[i];
         this.removeAllOfType('pipe');
-        // this.entities.splice(i, 1);
-        // console.log('this.entities', this.entities)
       }
   }
 };
 
 RemovalSystem.prototype.removeAllOfType = function(type) {
-  for(var i = 0; i < this.entities.length; i += 1) {
+  for(var i = this.entities.length - 1; i > 0; i -= 1) {
       var entity = this.entities[i];
-      // debugger;
       if(entity.type === type) {
         this.entities.splice(i, 1);
-        console.log('this.entities',this.entities)
       }
   }
 }
