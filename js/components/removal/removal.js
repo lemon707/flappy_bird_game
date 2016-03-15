@@ -1,6 +1,6 @@
 var RemovalComponent = function(entity) {
   this.entity = entity;
-  this.toBeRemoved = false;
+  this.toRemoveCurrentPair = false;
   this.toRemoveAllOfType = false;
 };
 

@@ -14,7 +14,7 @@ PhysicsSystem.prototype.run = function() {
 PhysicsSystem.prototype.tick = function() {
   for(var i = 0; i < this.entities.length; i += 1) {
     var entity = this.entities[i];
-    if(!'physics' in entity.components) {
+    if(!entity.components.hasOwnProperty('physics')) {
       continue;
     }
     entity.components.physics.update(1/60);

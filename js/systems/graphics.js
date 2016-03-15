@@ -24,7 +24,7 @@ GraphicsSystem.prototype.tick = function() {
 
   for(var i = 0; i < this.entities.length; i += 1) {
     var entity = this.entities[i];
-    if(!'graphics' in entity.components) {
+    if(!entity.components.hasOwnProperty('graphics')) {
       continue;
     }
     entity.components.graphics.draw(this.context);

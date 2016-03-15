@@ -5,15 +5,15 @@ var settings = require("../settings");
 
 var Plate = function(coord) {
   var physics = new physicsComponent.PhysicsComponent(this);
-  var size = {
-    x: 2,
-    y: 0.01
-  }
-  physics.position.x = coord.x + size.x / 2;
-  physics.position.y = coord.y + size.y / 2;
+  physics.size = {
+    x: 4,
+    y: 0.001
+  };
+  physics.position.x = coord.x;
+  physics.position.y = coord.y;
 
   var graphics = new graphicsComponent.PlateGraphicsComponent(this);
-  var collision = new collisionComponent.RectCollisionComponent(this, size);
+  var collision = new collisionComponent.RectCollisionComponent(this, physics.size);
   collision.onCollision = this.onCollision.bind(this);
 
   this.components = {
