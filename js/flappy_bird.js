@@ -15,7 +15,7 @@ var FlappyBird = function() {
 };
 
 FlappyBird.prototype.repeater = function() {
-  var arr = [new pipe.Pipe({x:1,y:0}), new pipe.Pipe({x:1,y:0.7})];
+  var arr = [new pipe.Pipe({x:0.85,y:0.15}), new pipe.Pipe({x:0.85,y:0.85})];
   var that = this; //this is what solves the whole problem - lexical scoping
   arr.forEach(function(p){
     that.entities.push(p);
@@ -26,7 +26,11 @@ FlappyBird.prototype.run = function() {
   this.graphics.run();
   this.physics.run();
   this.input.run();
-  // window.setInterval(this.repeater.bind(this), 2000);
+  
+  setInterval(this.repeater.bind(this), 2000);
+
+  // clearInterval(myInterval);
+
 };
 
 exports.FlappyBird = FlappyBird;
