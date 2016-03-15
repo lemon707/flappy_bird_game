@@ -21,3 +21,15 @@ div#overlay {
     top: 50px;
     right: 50px;
 }
+
+.center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+}
+
+.counter, .pauseGame, .restartGame {
+    display: none;
+    width: 100px;
+    height: 100px;
+}

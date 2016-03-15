@@ -28,9 +28,6 @@ FlappyBird.prototype.run = function() {
   this.input.run();
   
   setInterval(this.repeater.bind(this), 2000);
-
-  // clearInterval(myInterval);
-
 };
 
 exports.FlappyBird = FlappyBird;
