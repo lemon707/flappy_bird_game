@@ -1,10 +1,12 @@
 var collisionSystem = require('./collision');
 var removalSystem = require('./removal');
+var userInterfaceSystem = require('./ui');
 
 var PhysicsSystem = function(entities) {
   this.entities = entities;
   this.collisionSystem = new collisionSystem.CollisionSystem(entities);
   this.removalSystem = new removalSystem.RemovalSystem(entities);
+  this.userInterfaceSystem = new userInterfaceSystem.UserInterfaceSystem(entities);
 };
 
 PhysicsSystem.prototype.run = function() {
@@ -20,6 +22,7 @@ PhysicsSystem.prototype.tick = function() {
     entity.components.physics.update(1/60);
   }
   this.collisionSystem.tick();
+  this.userInterfaceSystem.tick();
   this.removalSystem.tick();
 };
 

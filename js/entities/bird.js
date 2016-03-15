@@ -25,6 +25,9 @@ Bird.prototype.onCollision = function(entity) {
   if(entity.components.hasOwnProperty('removal')) {
     entity.components.removal.toRemoveAllOfType = true;
   }
+  if(entity.components.hasOwnProperty('ui')) {
+    entity.components.ui.birdFlownThrough = true;
+  }
   this.components.physics.position.x = 0;
   this.components.physics.position.y = 0.5;
   this.components.physics.velocity.y = 0;

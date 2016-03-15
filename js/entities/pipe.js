@@ -2,7 +2,7 @@ var graphicsComponent = require("../components/graphics/pipe");
 var physicsComponent = require("../components/physics/physics");
 var collisionComponent = require("../components/collision/rect");
 var removalComponent = require("../components/removal/removal");
-
+var userInterfaceComponent = require("../components/ui/ui");
 var settings = require("../settings");
 
 var Pipe = function (coord) {
@@ -19,12 +19,16 @@ var Pipe = function (coord) {
   var collision = new collisionComponent.RectCollisionComponent(this, physics.size);
   collision.onCollision = this.onCollision.bind(this);
   var removal = new removalComponent.RemovalComponent(this);
+  var ui = new userInterfaceComponent.UserInterfaceComponent(this);
+
   this.type = 'pipe';
+  
   this.components = {
     graphics: graphics,
     physics: physics,
     collision: collision,
-    removal: removal
+    removal: removal,
+    ui: ui
   };
 };
 
