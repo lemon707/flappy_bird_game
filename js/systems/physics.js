@@ -17,12 +17,10 @@ PhysicsSystem.prototype.tick = function() {
     if(!'physics' in entity.components) {
       continue;
     }
-
     entity.components.physics.update(1/60);
   }
-  
   this.collisionSystem.tick();
-  // this.removalSystem.tick();
+  this.removalSystem.tick();
 };
 
 exports.PhysicsSystem = PhysicsSystem;

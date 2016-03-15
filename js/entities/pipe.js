@@ -5,7 +5,7 @@ var removalComponent = require("../components/removal/removal");
 
 var settings = require("../settings");
 
-var Pipe = function(coord) {
+var Pipe = function (coord) {
   var physics = new physicsComponent.PhysicsComponent(this);
   physics.size = {
     x: 0.3,
@@ -19,7 +19,7 @@ var Pipe = function(coord) {
   var collision = new collisionComponent.RectCollisionComponent(this, physics.size);
   collision.onCollision = this.onCollision.bind(this);
   var removal = new removalComponent.RemovalComponent(this);
-
+  this.type = 'pipe';
   this.components = {
     graphics: graphics,
     physics: physics,

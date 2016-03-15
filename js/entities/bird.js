@@ -2,7 +2,6 @@ var graphicsComponent = require("../components/graphics/bird");
 var physicsComponent = require("../components/physics/physics");
 var collisionComponent = require("../components/collision/circle");
 var settings = require("../settings");
-  var trigger = false;
 
 var Bird = function(coord) {
   var physics = new physicsComponent.PhysicsComponent(this);
@@ -23,8 +22,8 @@ var Bird = function(coord) {
 
 Bird.prototype.onCollision = function(entity) {
   //reset bird position to center and remove current pipes
-  if('removal' in entity.components) {
-    entity.components.removal.toBeRemoved = true;
+  if(entity.type === 'pipe') {
+    entity.components.removal.toRemoveAllOfType = true;
   }
   this.components.physics.position.x = 0;
   this.components.physics.position.y = 0.5;

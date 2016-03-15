@@ -135,11 +135,7 @@ PipeGraphicsComponent.prototype.draw = function(context) {
   context.beginPath();
   context.rect(0, 0, 0.3, 0.3);
   context.fill();
-
-  // context.moveTo(position.x, position.y);
-  // context.strokeStyle = 'green';
-  // context.strokeRect(0,0, 0.3, 0.3);
-
+  
   context.fillStyle = 'red';
   context.fillRect(0.15,0.15,0.01,0.01);
   context.restore();
@@ -217,6 +213,7 @@ exports.PhysicsComponent = PhysicsComponent;
 var RemovalComponent = function(entity) {
   this.entity = entity;
   this.toBeRemoved = false;
+  this.toRemoveAllOfType = false;
 };
 
 exports.RemovalComponent = RemovalComponent;
@@ -225,7 +222,6 @@ var graphicsComponent = require("../components/graphics/bird");
 var physicsComponent = require("../components/physics/physics");
 var collisionComponent = require("../components/collision/circle");
 var settings = require("../settings");
-  var trigger = false;
 
 var Bird = function(coord) {
   var physics = new physicsComponent.PhysicsComponent(this);
@@ -246,8 +242,8 @@ var Bird = function(coord) {
 
 Bird.prototype.onCollision = function(entity) {
   //reset bird position to center and remove current pipes
-  if('removal' in entity.components) {
-    entity.components.removal.toBeRemoved = true;
+  if(entity.type === 'pipe') {
+    entity.components.removal.toRemoveAllOfType = true;
   }
   this.components.physics.position.x = 0;
   this.components.physics.position.y = 0.5;
@@ -265,7 +261,7 @@ var removalComponent = require("../components/removal/removal");
 
 var settings = require("../settings");
 
-var Pipe = function(coord) {
+var Pipe = function (coord) {
   var physics = new physicsComponent.PhysicsComponent(this);
   physics.size = {
     x: 0.3,
@@ -279,7 +275,7 @@ var Pipe = function(coord) {
   var collision = new collisionComponent.RectCollisionComponent(this, physics.size);
   collision.onCollision = this.onCollision.bind(this);
   var removal = new removalComponent.RemovalComponent(this);
-
+  this.type = 'pipe';
   this.components = {
     graphics: graphics,
     physics: physics,
@@ -523,12 +519,10 @@ PhysicsSystem.prototype.tick = function() {
     if(!'physics' in entity.components) {
       continue;
     }
-
     entity.components.physics.update(1/60);
   }
-  
   this.collisionSystem.tick();
-  // this.removalSystem.tick();
+  this.removalSystem.tick();
 };
 
 exports.PhysicsSystem = PhysicsSystem;
@@ -541,14 +535,31 @@ var RemovalSystem = function(entities) {
 RemovalSystem.prototype.tick = function() {
   for(var i = 0; i < this.entities.length; i += 1) {
       var entity = this.entities[i];
-      if(!'removal' in entity.components) {
+      // debugger;
+      if(!entity.components.hasOwnProperty('removal')) {
+      // if(!'removal' in entity.components) {
         continue;
       }
-      if(entity.components.removal.toBeRemoved === true) {
-        this.entities.splice(i, 1);
+
+      if(entity.components.removal.toRemoveAllOfType === true) {
+        // delete this.entities[i];
+        this.removeAllOfType('pipe');
+        // this.entities.splice(i, 1);
+        // console.log('this.entities', this.entities)
       }
   }
 };
+
+RemovalSystem.prototype.removeAllOfType = function(type) {
+  for(var i = 0; i < this.entities.length; i += 1) {
+      var entity = this.entities[i];
+      // debugger;
+      if(entity.type === type) {
+        this.entities.splice(i, 1);
+        console.log('this.entities',this.entities)
+      }
+  }
+}
 
 exports.RemovalSystem = RemovalSystem;
 },{}]},{},[14]);
