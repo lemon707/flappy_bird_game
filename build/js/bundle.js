@@ -377,6 +377,8 @@ var pipe = require('./entities/pipe');
 var plate = require('./entities/plate');
 var wall = require('./entities/wall');
 
+var intervalID;
+
 var FlappyBird = function() {
   this.entities = [new bird.Bird({x:0}), new plate.Plate({x:-1,y:-0.05}), new plate.Plate({x:-1,y:1}), new wall.Wall({x:-1,y:0}), new pipe.Pipe({x:0.85,y:0.15}), new pipe.Pipe({x:0.85,y:0.85})];
   this.graphics = new graphicsSystem.GraphicsSystem(this.entities);
@@ -392,38 +394,59 @@ FlappyBird.prototype.repeater = function() {
   });
 };
 
+FlappyBird.prototype.pause = function() {
+  this.graphics.pause();
+  this.physics.pause();
+  this.input.pause();
+
+  window.clearInterval(intervalID);
+};
+
 FlappyBird.prototype.run = function() {
   this.graphics.run();
   this.physics.run();
   this.input.run();
   
-  setInterval(this.repeater.bind(this), 2000);
+  intervalID = window.setInterval(this.repeater.bind(this), 2000);
 };
 
 exports.FlappyBird = FlappyBird;
 },{"./entities/bird":10,"./entities/pipe":11,"./entities/plate":12,"./entities/wall":13,"./systems/graphics":18,"./systems/input":19,"./systems/physics":20}],15:[function(require,module,exports){
 var flappyBird = require('./flappy_bird');
-var app = new flappyBird.FlappyBird();;
-var playBtn = document.getElementsByClassName('startGame')[0];
-var restartBtn = document.getElementsByClassName('restartGame')[0];
-var numCounter = document.getElementsByClassName('counter')[0];
-var counter = 3;
-var countDown = function() {
-    counter -= 1;
-    numCounter.innerHTML = counter;
-};
-//start new game
-playBtn.addEventListener('click', function() {
-    this.style.display = "none";
-    numCounter.style.display = "block";
-    setInterval(function(){
+
+var app = new flappyBird.FlappyBird();
+
+var playBtn = document.getElementsByClassName('startGame')[0],
+    restartBtn = document.getElementsByClassName('restartGame')[0],
+    numCounter = document.getElementsByClassName('counter')[0],
+    counter = 3,
+    paused = false,
+    countDown = function() {
+        counter -= 1;
+        numCounter.innerHTML = counter;
+    },
+    toggleGameState = function() {
+        paused = !paused;
+        if(paused === false) {
+            app.run();
+        } else {
+            app.pause();
+        }
+    };
+
+//start new game or reset to a new game
+playBtn.addEventListener('click', function(e) {
+    e.preventDefault();
+    this.style.display = 'none';
+    numCounter.style.display = 'block';
+    window.setInterval(function(){
         countDown();
         if(counter === 0) {
-            numCounter.innerHTML = "START!"
-            setTimeout(function(){
-                numCounter.style.display = "none";
+            numCounter.innerHTML = 'START!';
+            window.setTimeout(function(){
+                numCounter.style.display = 'none';
                 app.run();
-            },1000)
+            },1000);
         }
     },1000);
 });
@@ -431,20 +454,28 @@ playBtn.addEventListener('click', function() {
 //pause game on pressing space
 //give option to reset game or restart
 document.onkeypress = function(e){
+    e.preventDefault();
     if(e.keyCode === 0 || e.keyCode === 32) {
         console.log('pause game indefinitely');
         e.preventDefault();
-        // setTimeout(function(){app.run()}, 10000);
+        toggleGameState();
     }
-}
+};
 
-//restart game
-restartBtn.addEventListener('click', function() {
-    this.stype.display = 'none';
+//restart game after pause
+restartBtn.addEventListener('click', function(e) {
+    e.preventDefault();
+    this.style.display = 'none';
     numCounter.style.display = 'block';
-    // countDown();
-    // setTimeout(function(){app.run()}, 5000);
-})
+    countDown();
+    app.run();
+});
+
+//access localStorage to save score
+saveScore.addEventListener('click', function(e) {
+    e.preventDefault();
+    this.style.display = 'block';
+});
 },{"./flappy_bird":14}],16:[function(require,module,exports){
 
 },{}],17:[function(require,module,exports){
@@ -484,8 +515,14 @@ var GraphicsSystem = function(entities) {
   this.context = this.canvas.getContext('2d');
 };
 
+var requestID;
+
 GraphicsSystem.prototype.run = function() {
-  window.requestAnimationFrame(this.tick.bind(this));
+  requestID = window.requestAnimationFrame(this.tick.bind(this));
+};
+
+GraphicsSystem.prototype.pause = function() {
+  window.cancelAnimationFrame(requestID);
 };
 
 GraphicsSystem.prototype.tick = function() {
@@ -528,17 +565,19 @@ InputSystem.prototype.run = function() {
   // this.canvas.addEventListener('touchstart', this.onClickMobile.bind(this));
 };
 
+InputSystem.prototype.pause = function() {
+  this.canvas.removeEventListener('click', this.onClick.bind(this));
+};
+
 InputSystem.prototype.onClick = function() {
   var bird = this.entities[0];
   bird.components.physics.velocity.y = 0.7;
 };
 
+//does not currently work
 InputSystem.prototype.onClickMobile = function(e) {
   e.preventDefault();
   console.log('touched');
-  
-  var bird = this.entities[0];
-  bird.components.physics.velocity.y = 0.3;
 };
 
 exports.InputSystem = InputSystem;
@@ -547,6 +586,7 @@ exports.InputSystem = InputSystem;
 var collisionSystem = require('./collision');
 var removalSystem = require('./removal');
 var userInterfaceSystem = require('./ui');
+var intervalID;
 
 var PhysicsSystem = function(entities) {
   this.entities = entities;
@@ -556,7 +596,11 @@ var PhysicsSystem = function(entities) {
 };
 
 PhysicsSystem.prototype.run = function() {
-  window.setInterval(this.tick.bind(this), 1000/60);
+  intervalID = window.setInterval(this.tick.bind(this), 1000/60);
+};
+
+PhysicsSystem.prototype.pause = function() {
+  window.clearInterval(intervalID);
 };
 
 PhysicsSystem.prototype.tick = function() {
@@ -586,7 +630,7 @@ RemovalSystem.prototype.tick = function() {
         continue;
       }
       if(entity.components.removal.toRemoveCurrentPair === true) {
-        this.toRemoveCurrentPair('pipe');
+        this.toRemoveCurrentPair(i);
       }
       if(entity.components.removal.toRemoveAllOfType === true) {
         this.removeAllOfType('pipe');
@@ -594,13 +638,8 @@ RemovalSystem.prototype.tick = function() {
   }
 };
 
-RemovalSystem.prototype.toRemoveCurrentPair = function(type) {
-  for(var i = this.entities.length - 1; i > 0; i -= 1) {
-      var entity = this.entities[i];
-      if(entity.type === type) {
-        this.entities.splice(i, 1);
-      }
-  }
+RemovalSystem.prototype.toRemoveCurrentPair = function(currentPipeIndex) {
+  this.entities.splice(currentPipeIndex, 1);
 };
 
 RemovalSystem.prototype.removeAllOfType = function(type) {

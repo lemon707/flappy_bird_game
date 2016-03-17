@@ -9,7 +9,7 @@ RemovalSystem.prototype.tick = function() {
         continue;
       }
       if(entity.components.removal.toRemoveCurrentPair === true) {
-        this.toRemoveCurrentPair('pipe');
+        this.toRemoveCurrentPair(i);
       }
       if(entity.components.removal.toRemoveAllOfType === true) {
         this.removeAllOfType('pipe');
@@ -17,13 +17,8 @@ RemovalSystem.prototype.tick = function() {
   }
 };
 
-RemovalSystem.prototype.toRemoveCurrentPair = function(type) {
-  for(var i = this.entities.length - 1; i > 0; i -= 1) {
-      var entity = this.entities[i];
-      if(entity.type === type) {
-        this.entities.splice(i, 1);
-      }
-  }
+RemovalSystem.prototype.toRemoveCurrentPair = function(currentPipeIndex) {
+  this.entities.splice(currentPipeIndex, 1);
 };
 
 RemovalSystem.prototype.removeAllOfType = function(type) {

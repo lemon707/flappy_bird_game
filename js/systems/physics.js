@@ -1,6 +1,7 @@
 var collisionSystem = require('./collision');
 var removalSystem = require('./removal');
 var userInterfaceSystem = require('./ui');
+var intervalID;
 
 var PhysicsSystem = function(entities) {
   this.entities = entities;
@@ -10,7 +11,11 @@ var PhysicsSystem = function(entities) {
 };
 
 PhysicsSystem.prototype.run = function() {
-  window.setInterval(this.tick.bind(this), 1000/60);
+  intervalID = window.setInterval(this.tick.bind(this), 1000/60);
+};
+
+PhysicsSystem.prototype.pause = function() {
+  window.clearInterval(intervalID);
 };
 
 PhysicsSystem.prototype.tick = function() {

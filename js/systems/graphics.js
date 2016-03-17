@@ -4,8 +4,14 @@ var GraphicsSystem = function(entities) {
   this.context = this.canvas.getContext('2d');
 };
 
+var requestID;
+
 GraphicsSystem.prototype.run = function() {
-  window.requestAnimationFrame(this.tick.bind(this));
+  requestID = window.requestAnimationFrame(this.tick.bind(this));
+};
+
+GraphicsSystem.prototype.pause = function() {
+  window.cancelAnimationFrame(requestID);
 };
 
 GraphicsSystem.prototype.tick = function() {

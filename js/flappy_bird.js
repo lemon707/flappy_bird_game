@@ -7,6 +7,8 @@ var pipe = require('./entities/pipe');
 var plate = require('./entities/plate');
 var wall = require('./entities/wall');
 
+var intervalID;
+
 var FlappyBird = function() {
   this.entities = [new bird.Bird({x:0}), new plate.Plate({x:-1,y:-0.05}), new plate.Plate({x:-1,y:1}), new wall.Wall({x:-1,y:0}), new pipe.Pipe({x:0.85,y:0.15}), new pipe.Pipe({x:0.85,y:0.85})];
   this.graphics = new graphicsSystem.GraphicsSystem(this.entities);
@@ -22,12 +24,20 @@ FlappyBird.prototype.repeater = function() {
   });
 };
 
+FlappyBird.prototype.pause = function() {
+  this.graphics.pause();
+  this.physics.pause();
+  this.input.pause();
+
+  window.clearInterval(intervalID);
+};
+
 FlappyBird.prototype.run = function() {
   this.graphics.run();
   this.physics.run();
   this.input.run();
   
-  setInterval(this.repeater.bind(this), 2000);
+  intervalID = window.setInterval(this.repeater.bind(this), 2000);
 };
 
 exports.FlappyBird = FlappyBird;
