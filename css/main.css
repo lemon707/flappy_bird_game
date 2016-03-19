@@ -28,6 +28,12 @@ div#overlay {
     left: 50%;
 }
 
+.pauseInfo {
+    position: absolute;
+    top: 60%;
+    left: 50%;
+}
+
 .counter, .pauseGame, .restartGame {
     display: none;
     width: 100px;

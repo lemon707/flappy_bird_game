@@ -95,7 +95,6 @@ RectCollisionComponent.prototype.collideRect = function(entity) {
   var rightB = positionB.x + sizeB.x / 2;
   var bottomB = positionB.y - sizeB.y / 2;
   var topB = positionB.y + sizeB.y / 2;
-  // console.log('leftA',leftA,'topA', topA, 'bottomA', bottomA, 'rightA', rightA)
 
   return !(leftA > rightB || leftB > rightA || bottomA > topB || bottomB > topA);
 };
@@ -276,7 +275,6 @@ Bird.prototype.onCollision = function(entity) {
       entity.components.removal.toRemoveAllOfType = true;
     }
     if(entity.type === 'coin') {
-      console.log('entity',entity.type);
       entity.components.removal.toRemove = true;
     }
   }
@@ -323,7 +321,6 @@ var Coin = function(coord) {
 };
 
 Coin.prototype.onCollision = function(entity) {
-  console.log('colliding');
 };
 
 exports.Coin = Coin;
@@ -492,7 +489,7 @@ var app = new flappyBird.FlappyBird();
 var playBtn = document.getElementsByClassName('startGame')[0],
     restartBtn = document.getElementsByClassName('restartGame')[0],
     numCounter = document.getElementsByClassName('counter')[0],
-    // saveScore = document.getElementsByClassName('saveScore')[0],
+    highestScore = document.getElementsByClassName('highestScore')[0],
     counter = 2,
     paused = false,
     countDown = function() {
@@ -506,6 +503,13 @@ var playBtn = document.getElementsByClassName('startGame')[0],
         } else {
             app.pause();
         }
+    },
+    endGame = function() {
+    //TODO:
+    //ui - "Game Over"
+    //show current score from localstorage
+    //pause and
+    //show start new game
     };
 
 //start new game or reset to a new game
@@ -545,12 +549,11 @@ restartBtn.addEventListener('click', function(e) {
     app.run();
 });
 
-//access localStorage to save score
-// saveScore.addEventListener('click', function(e) {
-//     e.preventDefault();
-//     this.style.display = 'block';
-// });
+//show highest score by accessing localstorage and taking Math.max of array
+// highestScore = 
 },{"./flappy_bird":16}],18:[function(require,module,exports){
+//toggle sound
+//adjust velocity
 
 },{}],19:[function(require,module,exports){
 var CollisionSystem = function(entities) {
@@ -729,7 +732,6 @@ exports.RemovalSystem = RemovalSystem;
 },{}],24:[function(require,module,exports){
 var UserInterfaceSystem = function(entities) {
   this.entities = entities;
-  this.count = 0;
   this.score = 0;
 };
 
@@ -741,33 +743,24 @@ UserInterfaceSystem.prototype.tick = function() {
       }
       if(entity.components.ui.birdFlownThrough === true) {
         if(entity.type === 'pipe') {
-          this.countPipesFlownThrough('pipe');
-          this.countScore('minus');
+          // save this.score in localstorage
+          // this.endGame();
         }
         if(entity.type === 'coin') {
-          this.countScore('plus');
+          this.success();
         }
       }
   }
 };
 
-UserInterfaceSystem.prototype.countPipesFlownThrough = function(type) {
-  for(var i = this.entities.length - 1; i > 0; i -= 1) {
-      var entity = this.entities[i];
-      if(entity.type === type) {
-        this.count += 1;
-        document.getElementsByClassName('numPipes')[0].innerHTML = this.count;
-      }
-  }
+UserInterfaceSystem.prototype.success = function() {
+  //play money sound
+  this.score += 1;
+  document.getElementsByClassName('score')[0].innerHTML = this.score;
 };
 
-UserInterfaceSystem.prototype.countScore = function(math) {
-  if(math === 'plus') {
-    this.score += 1;
-  } else {
-    this.score -= 1;
-  }
-  document.getElementsByClassName('score')[0].innerHTML = this.score;
+UserInterfaceSystem.prototype.endGame = function() {
+  //play ending sound
 };
 
 exports.UserInterfaceSystem = UserInterfaceSystem;

@@ -29,7 +29,6 @@ var Coin = function(coord) {
 };
 
 Coin.prototype.onCollision = function(entity) {
-  console.log('colliding');
 };
 
 exports.Coin = Coin;

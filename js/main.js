@@ -5,7 +5,7 @@ var app = new flappyBird.FlappyBird();
 var playBtn = document.getElementsByClassName('startGame')[0],
     restartBtn = document.getElementsByClassName('restartGame')[0],
     numCounter = document.getElementsByClassName('counter')[0],
-    // saveScore = document.getElementsByClassName('saveScore')[0],
+    highestScore = document.getElementsByClassName('highestScore')[0],
     counter = 2,
     paused = false,
     countDown = function() {
@@ -19,6 +19,13 @@ var playBtn = document.getElementsByClassName('startGame')[0],
         } else {
             app.pause();
         }
+    },
+    endGame = function() {
+    //TODO:
+    //ui - "Game Over"
+    //show current score from localstorage
+    //pause and
+    //show start new game
     };
 
 //start new game or reset to a new game
@@ -58,8 +65,5 @@ restartBtn.addEventListener('click', function(e) {
     app.run();
 });
 
-//access localStorage to save score
-// saveScore.addEventListener('click', function(e) {
-//     e.preventDefault();
-//     this.style.display = 'block';
-// });
+//show highest score by accessing localstorage and taking Math.max of array
+// highestScore = 

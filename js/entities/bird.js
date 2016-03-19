@@ -29,7 +29,6 @@ Bird.prototype.onCollision = function(entity) {
       entity.components.removal.toRemoveAllOfType = true;
     }
     if(entity.type === 'coin') {
-      console.log('entity',entity.type);
       entity.components.removal.toRemove = true;
     }
   }
