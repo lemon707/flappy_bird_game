@@ -9,6 +9,7 @@ WallGraphicsComponent.prototype.draw = function(context) {
   context.translate(position.x - size.x / 2, position.y - size.y / 2);
   context.beginPath();
   context.rect(0, 0, size.x, size.y);
+  context.fillStyle = 'transparent';
   context.fill();
   context.restore();
 };

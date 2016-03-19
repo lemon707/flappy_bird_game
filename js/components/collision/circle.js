@@ -18,7 +18,7 @@ CircleCollisionComponent.prototype.collideCircle = function(entity) {
   var positionB = entity.components.physics.position;
 
   var radiusA = this.radius;
-  var radiusB = entity.components.collision.raidus;
+  var radiusB = entity.components.collision.radius;
 
   var diff = {x: positionA.x - positionB.x,
     y: positionA.y - positionB.y};
