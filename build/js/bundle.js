@@ -449,7 +449,7 @@ var wall = require('./entities/wall');
 var intervalID;
 
 var FlappyBird = function() {
-  this.entities = [new bird.Bird({x:0}), new plate.Plate({x:0,y:0}), new plate.Plate({x:0,y:1}), new wall.Wall({x:-1,y:0.5}), new pipe.Pipe({x:0.85,y:0.15}), new pipe.Pipe({x:0.85,y:0.85})];
+  this.entities = [new bird.Bird({x:0}), new plate.Plate({x:0,y:0}), new plate.Plate({x:0,y:1}), new wall.Wall({x:-1.3,y:0.5}), new pipe.Pipe({x:0.85,y:0.15}), new pipe.Pipe({x:0.85,y:0.85})];
   this.graphics = new graphicsSystem.GraphicsSystem(this.entities);
   this.physics = new physicsSystem.PhysicsSystem(this.entities);
   this.input = new inputSystem.InputSystem(this.entities);
@@ -493,7 +493,7 @@ var playBtn = document.getElementsByClassName('startGame')[0],
     restartBtn = document.getElementsByClassName('restartGame')[0],
     numCounter = document.getElementsByClassName('counter')[0],
     // saveScore = document.getElementsByClassName('saveScore')[0],
-    counter = 3,
+    counter = 2,
     paused = false,
     countDown = function() {
         counter -= 1;
