@@ -13,6 +13,8 @@ var Bird = function(coord) {
   var collision = new collisionComponent.CircleCollisionComponent(this, 0.02);
   collision.onCollision = this.onCollision.bind(this);
   
+  this.type = 'bird';
+  
   this.components = {
     graphics: graphics,
     physics: physics,
@@ -23,7 +25,12 @@ var Bird = function(coord) {
 Bird.prototype.onCollision = function(entity) {
   //reset bird position to center and remove current pipes
   if(entity.components.hasOwnProperty('removal')) {
-    entity.components.removal.toRemoveAllOfType = true;
+    if(entity.type === 'pipe') {
+      entity.components.removal.toRemoveAllOfType = true;
+    }
+    if(entity.type === 'coin') {
+      entity.components.removal.toRemove = true;
+    }
   }
   if(entity.components.hasOwnProperty('ui')) {
     entity.components.ui.birdFlownThrough = true;

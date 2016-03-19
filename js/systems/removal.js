@@ -8,8 +8,8 @@ RemovalSystem.prototype.tick = function() {
       if(!entity.components.hasOwnProperty('removal')) {
         continue;
       }
-      if(entity.components.removal.toRemoveCurrentPair === true) {
-        this.toRemoveCurrentPair(i);
+      if(entity.components.removal.toRemove === true) {
+        this.toRemove(i);
       }
       if(entity.components.removal.toRemoveAllOfType === true) {
         this.removeAllOfType('pipe');
@@ -17,8 +17,8 @@ RemovalSystem.prototype.tick = function() {
   }
 };
 
-RemovalSystem.prototype.toRemoveCurrentPair = function(currentPipeIndex) {
-  this.entities.splice(currentPipeIndex, 1);
+RemovalSystem.prototype.toRemove = function(currentIndex) {
+  this.entities.splice(currentIndex, 1);
 };
 
 RemovalSystem.prototype.removeAllOfType = function(type) {

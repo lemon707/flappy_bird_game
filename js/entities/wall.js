@@ -7,7 +7,7 @@ var Wall = function(coord) {
   var physics = new physicsComponent.PhysicsComponent(this);
   physics.size = {
     x: 0.001,
-    y: 2
+    y: 1
   };
   physics.position.x = coord.x;
   physics.position.y = coord.y;

@@ -6,7 +6,7 @@ var settings = require("../settings");
 var Plate = function(coord) {
   var physics = new physicsComponent.PhysicsComponent(this);
   physics.size = {
-    x: 4,
+    x: 2,
     y: 0.001
   };
   physics.position.x = coord.x;

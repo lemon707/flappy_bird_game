@@ -1,6 +1,7 @@
 var UserInterfaceSystem = function(entities) {
   this.entities = entities;
   this.count = 0;
+  this.score = 0;
 };
 
 UserInterfaceSystem.prototype.tick = function() {
@@ -10,7 +11,13 @@ UserInterfaceSystem.prototype.tick = function() {
         continue;
       }
       if(entity.components.ui.birdFlownThrough === true) {
-        this.countPipesFlownThrough('pipe');
+        if(entity.type === 'pipe') {
+          this.countPipesFlownThrough('pipe');
+          this.countScore('minus');
+        }
+        if(entity.type === 'coin') {
+          this.countScore('plus');
+        }
       }
   }
 };
@@ -23,6 +30,15 @@ UserInterfaceSystem.prototype.countPipesFlownThrough = function(type) {
         document.getElementsByClassName('numPipes')[0].innerHTML = this.count;
       }
   }
+};
+
+UserInterfaceSystem.prototype.countScore = function(math) {
+  if(math === 'plus') {
+    this.score += 1;
+  } else {
+    this.score -= 1;
+  }
+  document.getElementsByClassName('score')[0].innerHTML = this.score;
 };
 
 exports.UserInterfaceSystem = UserInterfaceSystem;
