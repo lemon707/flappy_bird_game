@@ -5,6 +5,7 @@ var app = new flappyBird.FlappyBird();
 var playBtn = document.getElementsByClassName('startGame')[0],
     restartBtn = document.getElementsByClassName('restartGame')[0],
     numCounter = document.getElementsByClassName('counter')[0],
+    // saveScore = document.getElementsByClassName('saveScore')[0],
     counter = 3,
     paused = false,
     countDown = function() {
@@ -58,7 +59,7 @@ restartBtn.addEventListener('click', function(e) {
 });
 
 //access localStorage to save score
-saveScore.addEventListener('click', function(e) {
-    e.preventDefault();
-    this.style.display = 'block';
-});
+// saveScore.addEventListener('click', function(e) {
+//     e.preventDefault();
+//     this.style.display = 'block';
+// });

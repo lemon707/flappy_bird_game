@@ -274,6 +274,7 @@ Bird.prototype.onCollision = function(entity) {
       entity.components.removal.toRemoveAllOfType = true;
     }
     if(entity.type === 'coin') {
+      console.log('entity',entity.type);
       entity.components.removal.toRemove = true;
     }
   }
@@ -320,7 +321,7 @@ var Coin = function(coord) {
 };
 
 Coin.prototype.onCollision = function(entity) {
-  
+  console.log('colliding');
 };
 
 exports.Coin = Coin;
@@ -427,7 +428,7 @@ var Wall = function(coord) {
 
 Wall.prototype.onCollision = function(entity) {
   if(entity.components.hasOwnProperty('removal')) {
-    entity.components.removal.toRemoveCurrentPair = true;
+    entity.components.removal.toRemove = true;
   }
 };
 
@@ -446,7 +447,7 @@ var wall = require('./entities/wall');
 var intervalID;
 
 var FlappyBird = function() {
-  this.entities = [new bird.Bird({x:0}), new plate.Plate({x:-1,y:-0.05}), new plate.Plate({x:-1,y:1.05}), new wall.Wall({x:-1,y:0}), new pipe.Pipe({x:0.85,y:0.15}), new pipe.Pipe({x:0.85,y:0.85})];
+  this.entities = [new bird.Bird({x:0}), new plate.Plate({x:-1,y:-0.05}), new plate.Plate({x:-1,y:1.05}), new wall.Wall({x:-2,y:0.5}), new pipe.Pipe({x:0.85,y:0.15}), new pipe.Pipe({x:0.85,y:0.85})];
   this.graphics = new graphicsSystem.GraphicsSystem(this.entities);
   this.physics = new physicsSystem.PhysicsSystem(this.entities);
   this.input = new inputSystem.InputSystem(this.entities);
@@ -489,6 +490,7 @@ var app = new flappyBird.FlappyBird();
 var playBtn = document.getElementsByClassName('startGame')[0],
     restartBtn = document.getElementsByClassName('restartGame')[0],
     numCounter = document.getElementsByClassName('counter')[0],
+    // saveScore = document.getElementsByClassName('saveScore')[0],
     counter = 3,
     paused = false,
     countDown = function() {
@@ -542,10 +544,10 @@ restartBtn.addEventListener('click', function(e) {
 });
 
 //access localStorage to save score
-saveScore.addEventListener('click', function(e) {
-    e.preventDefault();
-    this.style.display = 'block';
-});
+// saveScore.addEventListener('click', function(e) {
+//     e.preventDefault();
+//     this.style.display = 'block';
+// });
 },{"./flappy_bird":16}],18:[function(require,module,exports){
 
 },{}],19:[function(require,module,exports){

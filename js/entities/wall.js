@@ -25,7 +25,7 @@ var Wall = function(coord) {
 
 Wall.prototype.onCollision = function(entity) {
   if(entity.components.hasOwnProperty('removal')) {
-    entity.components.removal.toRemoveCurrentPair = true;
+    entity.components.removal.toRemove = true;
   }
 };
 
