@@ -36,6 +36,10 @@ div#overlay {
     right: 50px;
 }
 
+.fa-heart {
+    color: red;
+}
+
 .gameInterface2 {
     position: absolute;
     top: 50px;

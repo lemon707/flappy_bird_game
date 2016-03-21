@@ -755,6 +755,7 @@ exports.RemovalSystem = RemovalSystem;
 var UserInterfaceSystem = function(entities) {
   this.entities = entities;
   this.score = 0;
+  this.life = 3;
 };
 
 var coinSound = new Audio('./sound/coin.wav');
@@ -769,7 +770,10 @@ UserInterfaceSystem.prototype.tick = function() {
       if(entity.components.ui.birdFlownThrough === true) {
         if(entity.type === 'pipe') {
           // save this.score in localstorage
-          this.endGame();
+          this.fail();
+          if(this.life === 0) {
+            this.endGame();
+          }
         }
         if(entity.type === 'coin') {
           this.success();
@@ -785,10 +789,15 @@ UserInterfaceSystem.prototype.success = function() {
   document.getElementsByClassName('score')[0].innerHTML = this.score;
 };
 
+UserInterfaceSystem.prototype.fail = function() {
+  bumpSound.play();
+  this.life -= 1;
+  document.getElementsByClassName('life')[0].innerHTML = this.life;
+};
+
 UserInterfaceSystem.prototype.endGame = function() {
   //play ending sound
-  bumpSound.play();
-  console.log('game over!')
+  console.log('game over!');
 };
 
 exports.UserInterfaceSystem = UserInterfaceSystem;
