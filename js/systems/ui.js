@@ -7,6 +7,7 @@ var UserInterfaceSystem = function(entities) {
 var coinSound = new Audio('./sound/coin.wav');
 var bumpSound = new Audio('./sound/bump.wav');
 var endSound = new Audio('./sound/game-over.mp3');
+var endText = document.getElementsByClassName('endText')[0];
 
 UserInterfaceSystem.prototype.tick = function() {
   for(var i = 0; i < this.entities.length; i += 1) {
@@ -30,7 +31,6 @@ UserInterfaceSystem.prototype.tick = function() {
 };
 
 UserInterfaceSystem.prototype.success = function() {
-  //play money sound
   coinSound.play();
   this.score += 1;
   document.getElementsByClassName('score')[0].innerHTML = this.score;
@@ -43,9 +43,8 @@ UserInterfaceSystem.prototype.fail = function() {
 };
 
 UserInterfaceSystem.prototype.endGame = function() {
-  //play ending sound
   endSound.play();
-  console.log('game over!');
+  endText.style.display = 'block';
 };
 
 exports.UserInterfaceSystem = UserInterfaceSystem;

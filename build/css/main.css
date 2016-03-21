@@ -78,7 +78,7 @@ div#overlay {
     border: none;
 }
 
-.pauseText {
+.pauseText, .endText {
     position: absolute;
     font-size: 80px;
     top: 25%;
@@ -86,7 +86,7 @@ div#overlay {
     transform: translate(-50%,-50%);
 }
 
-.counter, .pauseText, .restartGame {
+.counter, .pauseText, .endText, .restartGame {
     display: none;
 }
 

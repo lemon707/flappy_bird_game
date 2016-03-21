@@ -28,7 +28,6 @@ var playBtn = document.getElementsByClassName('startGame')[0],
     },
     endGame = function() {
     //TODO:
-    //ui - "Game Over"
     //show current score from localstorage
     //pause and
     //show start new game
@@ -59,7 +58,6 @@ playBtn.addEventListener('click', function(e) {
 document.onkeypress = function(e){
     e.preventDefault();
     if(e.keyCode === 0 || e.keyCode === 32) {
-        console.log('pause game indefinitely');
         e.preventDefault();
         toggleGameState();
     }
