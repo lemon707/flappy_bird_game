@@ -80,17 +80,14 @@ div#overlay {
 
 .pauseText {
     position: absolute;
-    font-size: 30px;
-    color: #fff;
-    top: 40%;
+    font-size: 80px;
+    top: 25%;
     left: 50%;
     transform: translate(-50%,-50%);
 }
 
 .counter, .pauseText, .restartGame {
     display: none;
-    width: 100px;
-    height: 100px;
 }
 
 .img_bird, .img_coin, .img_pipe {
@@ -116,7 +113,7 @@ div#overlay {
     .center {
         font-size: 15px;
     }
-    .game-title {
+    .game-title, .pauseText {
         font-size: 40px;
     }
 }
