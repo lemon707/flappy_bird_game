@@ -500,6 +500,7 @@ var flappyBird = require('./flappy_bird');
 var app = new flappyBird.FlappyBird();
 
 var playBtn = document.getElementsByClassName('startGame')[0],
+    playSound = new Audio('./sound/start-game.mp3');
     pauseText = document.getElementsByClassName('pauseText')[0],
     restartBtn = document.getElementsByClassName('restartGame')[0],
     coinImg = document.getElementsByClassName('img_coin_start_image')[0],
@@ -530,9 +531,12 @@ var playBtn = document.getElementsByClassName('startGame')[0],
     //show start new game
     };
 
+playSound.play();
 //start new game or reset to a new game
 playBtn.addEventListener('click', function(e) {
     e.preventDefault();
+    playSound.pause();
+    playSound.currentTime = 0;
     this.style.display = 'none';
     birdImg.style.display = 'none';
     coinImg.style.display = 'none';
