@@ -754,6 +754,8 @@ var UserInterfaceSystem = function(entities) {
   this.score = 0;
 };
 
+var coinSound = new Audio('./sound/coin.wav');
+
 UserInterfaceSystem.prototype.tick = function() {
   for(var i = 0; i < this.entities.length; i += 1) {
       var entity = this.entities[i];
@@ -774,6 +776,7 @@ UserInterfaceSystem.prototype.tick = function() {
 
 UserInterfaceSystem.prototype.success = function() {
   //play money sound
+  coinSound.play();
   this.score += 1;
   document.getElementsByClassName('score')[0].innerHTML = this.score;
 };
