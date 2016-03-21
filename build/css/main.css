@@ -40,6 +40,11 @@ div#overlay {
     color: red;
 }
 
+.fa-ban {
+    color: tomato;
+    display: none;
+}
+
 .gold-text {
     color:#c3a343;
     -webkit-text-fill-color: transparent;

@@ -9,6 +9,10 @@ var bumpSound = new Audio('./sound/bump.wav');
 var endSound = new Audio('./sound/game-over.mp3');
 var endText = document.getElementsByClassName('endText')[0];
 
+coinSound.volume = 0.5;
+bumpSound.volume = 0.5;
+endSound.volume = 0.5;
+
 UserInterfaceSystem.prototype.tick = function() {
   for(var i = 0; i < this.entities.length; i += 1) {
       var entity = this.entities[i];

@@ -4,6 +4,9 @@ var app = new flappyBird.FlappyBird();
 
 var playBtn = document.getElementsByClassName('startGame')[0],
     playSound = new Audio('./sound/start-music.mp3');
+    soundMuteIcon = document.getElementsByClassName('fa-ban')[0],
+    instructionText = document.getElementsByClassName('instruction'),
+    soundControl = document.getElementsByClassName('soundControl')[0],
     pauseText = document.getElementsByClassName('pauseText')[0],
     restartBtn = document.getElementsByClassName('restartGame')[0],
     coinImg = document.getElementsByClassName('img_coin_start_image')[0],
@@ -12,6 +15,7 @@ var playBtn = document.getElementsByClassName('startGame')[0],
     numCounter = document.getElementsByClassName('counter')[0],
     highestScore = document.getElementsByClassName('highestScore')[0],
     counter = 2,
+    mute = false,
     paused = false,
     countDown = function() {
         counter -= 1;
@@ -27,6 +31,16 @@ var playBtn = document.getElementsByClassName('startGame')[0],
             app.pause();
         }
     },
+    toggleSound = function() {
+        mute = !mute;
+        if(mute === true) {
+            soundMuteIcon.style.display = 'block';
+            playSound.volume = 0;
+        } else {
+            soundMuteIcon.style.display = 'none';
+            playSound.volume = 0.5;
+        }
+    },
     endGame = function() {
     //TODO:
     //show current score from localstorage
@@ -34,6 +48,13 @@ var playBtn = document.getElementsByClassName('startGame')[0],
     //show start new game
     };
 
+soundControl.addEventListener('click', function(e) {
+    e.preventDefault();
+    mute = true;
+    toggleSound();
+});
+
+playSound.volume = 0.5;
 playSound.play();
 //start new game or reset to a new game
 playBtn.addEventListener('click', function(e) {
@@ -44,6 +65,8 @@ playBtn.addEventListener('click', function(e) {
     birdImg.style.display = 'none';
     coinImg.style.display = 'none';
     gameTitle.style.display = 'none';
+    instructionText[0].style.display = 'none';
+    instructionText[1].style.display = 'none';
     numCounter.style.display = 'block';
     window.setInterval(function(){
         countDown();
