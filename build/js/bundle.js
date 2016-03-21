@@ -755,6 +755,7 @@ var UserInterfaceSystem = function(entities) {
 };
 
 var coinSound = new Audio('./sound/coin.wav');
+var bumpSound = new Audio('./sound/bump.wav');
 
 UserInterfaceSystem.prototype.tick = function() {
   for(var i = 0; i < this.entities.length; i += 1) {
@@ -765,7 +766,7 @@ UserInterfaceSystem.prototype.tick = function() {
       if(entity.components.ui.birdFlownThrough === true) {
         if(entity.type === 'pipe') {
           // save this.score in localstorage
-          // this.endGame();
+          this.endGame();
         }
         if(entity.type === 'coin') {
           this.success();
@@ -783,6 +784,8 @@ UserInterfaceSystem.prototype.success = function() {
 
 UserInterfaceSystem.prototype.endGame = function() {
   //play ending sound
+  bumpSound.play();
+  console.log('game over!')
 };
 
 exports.UserInterfaceSystem = UserInterfaceSystem;
