@@ -3,7 +3,7 @@ var flappyBird = require('./flappy_bird');
 var app = new flappyBird.FlappyBird();
 
 var playBtn = document.getElementsByClassName('startGame')[0],
-    playSound = new Audio('./sound/start-music.mp3');
+    playSound = new Audio('./sound/start-music.mp3'),
     soundMuteIcon = document.getElementsByClassName('fa-ban')[0],
     instructionText = document.getElementsByClassName('instruction'),
     soundControl = document.getElementsByClassName('soundControl')[0],
