@@ -40,6 +40,15 @@ div#overlay {
     color: red;
 }
 
+.gold-text {
+    color:#c3a343;
+    -webkit-text-fill-color: transparent;
+    background: -webkit-linear-gradient(transparent, transparent),
+    url("../images/gold_texture.png") repeat;
+    background: -o-linear-gradient(transparent, transparent);
+    -webkit-background-clip: text;
+}
+
 .gameInterface2 {
     position: absolute;
     top: 50px;
@@ -49,7 +58,7 @@ div#overlay {
 .center {
     text-align: center;
     position: absolute;
-    top: 45%;
+    top: 50%;
     left: 50%;
     transform: translate(-50%,-50%);
     font-family: 'Open Sans', sans-serif;
@@ -59,8 +68,9 @@ div#overlay {
 
 .game-title {
     color: #fff;
-    top: 30%;
-    font-size: 30px;
+    line-height: 1;
+    top: 25%;
+    font-size: 80px;
 }
 
 .startGame {
@@ -89,13 +99,13 @@ div#overlay {
 
 .img_start_image_bird {
     position: absolute;
-    top: 50%;
+    top: 55%;
     left: 20%;
 }
 
 .img_coin_start_image {
     position: absolute;
-    top: 50%;
+    top: 55%;
     right: 10%;
 }
 
@@ -107,6 +117,6 @@ div#overlay {
         font-size: 15px;
     }
     .game-title {
-        font-size: 25px;
+        font-size: 40px;
     }
 }
