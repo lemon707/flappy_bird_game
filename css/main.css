@@ -64,13 +64,16 @@ div#overlay {
     border: none;
 }
 
-.pauseInfo {
+.pauseText {
     position: absolute;
-    top: 45%;
+    font-size: 30px;
+    color: #fff;
+    top: 40%;
     left: 50%;
+    transform: translate(-50%,-50%);
 }
 
-.counter, .pauseGame, .restartGame {
+.counter, .pauseText, .restartGame {
     display: none;
     width: 100px;
     height: 100px;
@@ -99,7 +102,7 @@ div#overlay {
     .center {
         font-size: 15px;
     }
-    .title {
-        font-size: 22px;
+    .game-title {
+        font-size: 25px;
     }
 }
