@@ -107,15 +107,20 @@ var BirdGraphicsComponent = function(entity) {
 
 BirdGraphicsComponent.prototype.draw = function(context) {
   var position = this.entity.components.physics.position;
+  var image_bird = document.getElementsByClassName("img_bird")[0];
 
   context.save();
   context.translate(position.x, position.y);
   context.beginPath();
   context.arc(0, 0, 0.02, 0, 2 * Math.PI);
+  context.fillStyle = 'transparent';
   context.fill();
+  // context.rotate(); how to rotate the bird?
+  context.drawImage(image_bird,-0.05,-0.05,0.1,0.1);
   context.closePath();
-  context.fillStyle = 'red';
-  context.fillRect(0,0,0.005,0.005);
+  // drawing out the center of the circle
+  // context.fillStyle = 'red';
+  // context.fillRect(0,0,0.005,0.005);
   context.restore();
 
 };
@@ -128,16 +133,20 @@ var CoinGraphicsComponent = function(entity) {
 
 CoinGraphicsComponent.prototype.draw = function(context) {
   var position = this.entity.components.physics.position;
+  var image_coin = document.getElementsByClassName("img_coin")[0];
 
   context.save();
   context.translate(position.x, position.y);
   context.beginPath();
-  context.fillStyle = '#ffd700';
+  // context.fillStyle = '#ffd700';
   context.arc(0, 0, 0.01, 0, 2 * Math.PI);
+  context.fillStyle = 'transparent';
   context.fill();
+  context.drawImage(image_coin,-0.015,-0.015,0.035,0.035);
   context.closePath();
-  context.fillStyle = 'black';
-  context.fillRect(0,0,0.005,0.005);
+  // drawing out the center of the circle
+  // context.fillStyle = 'black';
+  // context.fillRect(0,0,0.005,0.005);
   context.restore();
 
 };
@@ -151,14 +160,18 @@ var PipeGraphicsComponent = function(entity) {
 PipeGraphicsComponent.prototype.draw = function(context) {
   var position = this.entity.components.physics.position;
   var size = this.entity.components.physics.size;
+  var image_pipe = document.getElementsByClassName("img_pipe")[0];
+
   context.save();
   context.translate(position.x - size.x / 2, position.y - size.y / 2);
   context.beginPath();
   context.rect(0, 0, size.x, size.y);
+  context.fillStyle = 'transparent';
   context.fill();
-  
-  context.fillStyle = 'red';
-  context.fillRect(size.x / 2,size.y / 2,0.01,0.01);
+  context.drawImage(image_pipe,0,0, 0.3,0.3);
+  // drawing out the center of the pipe
+  // context.fillStyle = 'red';
+  // context.fillRect(size.x / 2,size.y / 2,0.01,0.01);
   context.restore();
 };
 
