@@ -4,6 +4,9 @@ var app = new flappyBird.FlappyBird();
 
 var playBtn = document.getElementsByClassName('startGame')[0],
     restartBtn = document.getElementsByClassName('restartGame')[0],
+    coinImg = document.getElementsByClassName('img_coin_start_image')[0],
+    birdImg = document.getElementsByClassName('img_start_image_bird')[0],
+    gameTitle = document.getElementsByClassName('game-title')[0],
     numCounter = document.getElementsByClassName('counter')[0],
     highestScore = document.getElementsByClassName('highestScore')[0],
     counter = 2,
@@ -32,6 +35,9 @@ var playBtn = document.getElementsByClassName('startGame')[0],
 playBtn.addEventListener('click', function(e) {
     e.preventDefault();
     this.style.display = 'none';
+    birdImg.style.display = 'none';
+    coinImg.style.display = 'none';
+    gameTitle.style.display = 'none';
     numCounter.style.display = 'block';
     window.setInterval(function(){
         countDown();
