@@ -17,11 +17,18 @@ var playBtn = document.getElementsByClassName('startGame')[0],
     counter = 2,
     mute = false,
     paused = false,
-    countDown = function() {
+    countDown = countDown,
+    toggleGameState = toggleGameState,
+    toggleSound = toggleSound,
+    endGame = endGame,
+    startNewGame = startNewGame;
+
+    function countDown() {
         counter -= 1;
         numCounter.innerHTML = counter;
-    },
-    toggleGameState = function() {
+    }
+
+    function toggleGameState() {
         paused = !paused;
         if(paused === false) {
             pauseText.style.display = 'none';
@@ -30,8 +37,9 @@ var playBtn = document.getElementsByClassName('startGame')[0],
             pauseText.style.display = 'block';
             app.pause();
         }
-    },
-    toggleSound = function() {
+    }
+
+    function toggleSound() {
         mute = !mute;
         if(mute === true) {
             soundMuteIcon.style.display = 'block';
@@ -40,13 +48,38 @@ var playBtn = document.getElementsByClassName('startGame')[0],
             soundMuteIcon.style.display = 'none';
             playSound.volume = 0.5;
         }
-    },
-    endGame = function() {
-    //TODO:
-    //show current score from localstorage
-    //pause and
-    //show start new game
-    };
+    }
+
+    function endGame() {
+        //TODO:
+        //show current score from localstorage
+        //pause and
+        //show start new game
+        // app.pause();
+    }
+
+    function startNewGame(e) {
+        e.preventDefault();
+        playSound.pause();
+        playSound.currentTime = 0;
+        this.style.display = 'none';
+        birdImg.style.display = 'none';
+        coinImg.style.display = 'none';
+        gameTitle.style.display = 'none';
+        instructionText[0].style.display = 'none';
+        instructionText[1].style.display = 'none';
+        numCounter.style.display = 'block';
+        window.setInterval(function(){
+            countDown();
+            if(counter === 0) {
+                numCounter.innerHTML = 'START!';
+                window.setTimeout(function(){
+                    numCounter.style.display = 'none';
+                    app.run();
+                },1000);
+            }
+        },1000);
+    }
 
 soundControl.addEventListener('click', function(e) {
     e.preventDefault();
@@ -55,29 +88,12 @@ soundControl.addEventListener('click', function(e) {
 
 playSound.volume = 0.5;
 playSound.play();
+
 //start new game or reset to a new game
-playBtn.addEventListener('click', function(e) {
-    e.preventDefault();
-    playSound.pause();
-    playSound.currentTime = 0;
-    this.style.display = 'none';
-    birdImg.style.display = 'none';
-    coinImg.style.display = 'none';
-    gameTitle.style.display = 'none';
-    instructionText[0].style.display = 'none';
-    instructionText[1].style.display = 'none';
-    numCounter.style.display = 'block';
-    window.setInterval(function(){
-        countDown();
-        if(counter === 0) {
-            numCounter.innerHTML = 'START!';
-            window.setTimeout(function(){
-                numCounter.style.display = 'none';
-                app.run();
-            },1000);
-        }
-    },1000);
-});
+playBtn.addEventListener('click', startNewGame);
+
+// TODO:
+// restartBtn.addEventListener('click', startNewGame);
 
 //pause game on pressing space
 //give option to reset game or restart

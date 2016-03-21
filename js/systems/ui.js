@@ -4,6 +4,7 @@ var coinSound = new Audio('./sound/coin.wav');
 var bumpSound = new Audio('./sound/bump.wav');
 var endSound = new Audio('./sound/game-over.mp3');
 var mute = false;
+var restartBtn = document.getElementsByClassName('restartGame')[0];
 var endText = document.getElementsByClassName('endText')[0];
 
 coinSound.volume = 0.5;
@@ -73,6 +74,7 @@ UserInterfaceSystem.prototype.fail = function() {
 UserInterfaceSystem.prototype.endGame = function() {
   endSound.play();
   endText.style.display = 'block';
+  restartBtn.style.display = 'block';
 };
 
 exports.UserInterfaceSystem = UserInterfaceSystem;
