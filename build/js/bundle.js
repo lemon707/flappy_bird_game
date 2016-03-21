@@ -531,7 +531,6 @@ var playBtn = document.getElementsByClassName('startGame')[0],
         }
     },
     toggleSound = function() {
-        console.log('mute',mute)
         mute = !mute;
         if(mute === true) {
             soundMuteIcon.style.display = 'block';
@@ -779,20 +778,44 @@ RemovalSystem.prototype.removeAllOfType = function(type) {
 
 exports.RemovalSystem = RemovalSystem;
 },{}],24:[function(require,module,exports){
+var gameSoundControl = document.getElementsByClassName('soundControl')[0];
+var gameSoundMuteIcon = document.getElementsByClassName('fa-ban')[0];
+var coinSound = new Audio('./sound/coin.wav');
+var bumpSound = new Audio('./sound/bump.wav');
+var endSound = new Audio('./sound/game-over.mp3');
+var mute = false;
+var endText = document.getElementsByClassName('endText')[0];
+
+coinSound.volume = 0.5;
+bumpSound.volume = 0.5;
+endSound.volume = 0.5;
+
 var UserInterfaceSystem = function(entities) {
   this.entities = entities;
   this.score = 0;
   this.life = 3;
 };
 
-var coinSound = new Audio('./sound/coin.wav');
-var bumpSound = new Audio('./sound/bump.wav');
-var endSound = new Audio('./sound/game-over.mp3');
-var endText = document.getElementsByClassName('endText')[0];
+var toggleGameSound = function() {
+    mute = !mute;
+    if(mute === true) {
+        gameSoundControl.style.display = 'block';
+        coinSound.volume = 0;
+        bumpSound.volume = 0;
+        endSound.volume = 0;
+    } else {
+        gameSoundControl.style.display = 'none';
+        coinSound.volume = 0.5;
+        bumpSound.volume = 0.5;
+        endSound.volume = 0.5;
+    }
+};
 
-coinSound.volume = 0.5;
-bumpSound.volume = 0.5;
-endSound.volume = 0.5;
+gameSoundControl.addEventListener('click', function(e) {
+    e.preventDefault();
+    toggleGameSound();
+});
+
 
 UserInterfaceSystem.prototype.tick = function() {
   for(var i = 0; i < this.entities.length; i += 1) {
