@@ -160,6 +160,7 @@ var PipeGraphicsComponent = function(entity) {
 PipeGraphicsComponent.prototype.draw = function(context) {
   var position = this.entity.components.physics.position;
   var size = this.entity.components.physics.size;
+  var vector = this.entity.components.physics.vector;
   var image_pipe = document.getElementsByClassName("img_pipe")[0];
 
   context.save();
@@ -354,7 +355,8 @@ var Pipe = function (coord) {
   physics.position.x = coord.x;
   physics.position.y = coord.y;
   physics.velocity.x = -0.5;
-  
+  physics.vector = coord.pipeVector;
+
   var graphics = new graphicsComponent.PipeGraphicsComponent(this);
   var collision = new collisionComponent.RectCollisionComponent(this, physics.size);
   collision.onCollision = this.onCollision.bind(this);
@@ -466,7 +468,7 @@ var FlappyBird = function() {
 };
 
 FlappyBird.prototype.repeater = function() {
-  var pipeArr = [new pipe.Pipe({x:0.85,y:0.15}), new pipe.Pipe({x:0.85,y:0.85})];
+  var pipeArr = [new pipe.Pipe({x:0.85,y:0.15,pipeVector:0}), new pipe.Pipe({x:0.85,y:0.85})];
   var coinArr = [new coin.Coin({x:0.4,y:0.6}), new coin.Coin({x:0.7,y:0.4}), new coin.Coin({x:0.9, y:0.55})];
   var that = this; //this is what solves the whole problem - lexical scoping
   pipeArr.forEach(function(p) {
@@ -500,7 +502,7 @@ var flappyBird = require('./flappy_bird');
 var app = new flappyBird.FlappyBird();
 
 var playBtn = document.getElementsByClassName('startGame')[0],
-    playSound = new Audio('./sound/start-music.mp3');
+    playSound = new Audio('./sound/start-music.mp3'),
     soundMuteIcon = document.getElementsByClassName('fa-ban')[0],
     instructionText = document.getElementsByClassName('instruction'),
     soundControl = document.getElementsByClassName('soundControl')[0],
@@ -529,6 +531,7 @@ var playBtn = document.getElementsByClassName('startGame')[0],
         }
     },
     toggleSound = function() {
+        console.log('mute',mute)
         mute = !mute;
         if(mute === true) {
             soundMuteIcon.style.display = 'block';
@@ -547,7 +550,6 @@ var playBtn = document.getElementsByClassName('startGame')[0],
 
 soundControl.addEventListener('click', function(e) {
     e.preventDefault();
-    mute = true;
     toggleSound();
 });
 

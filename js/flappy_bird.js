@@ -18,7 +18,7 @@ var FlappyBird = function() {
 };
 
 FlappyBird.prototype.repeater = function() {
-  var pipeArr = [new pipe.Pipe({x:0.85,y:0.15}), new pipe.Pipe({x:0.85,y:0.85})];
+  var pipeArr = [new pipe.Pipe({x:0.85,y:0.15,pipeVector:0}), new pipe.Pipe({x:0.85,y:0.85})];
   var coinArr = [new coin.Coin({x:0.4,y:0.6}), new coin.Coin({x:0.7,y:0.4}), new coin.Coin({x:0.9, y:0.55})];
   var that = this; //this is what solves the whole problem - lexical scoping
   pipeArr.forEach(function(p) {

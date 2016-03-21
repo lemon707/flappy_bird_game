@@ -5,6 +5,7 @@ var PipeGraphicsComponent = function(entity) {
 PipeGraphicsComponent.prototype.draw = function(context) {
   var position = this.entity.components.physics.position;
   var size = this.entity.components.physics.size;
+  var vector = this.entity.components.physics.vector;
   var image_pipe = document.getElementsByClassName("img_pipe")[0];
 
   context.save();

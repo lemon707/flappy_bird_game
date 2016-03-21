@@ -14,7 +14,8 @@ var Pipe = function (coord) {
   physics.position.x = coord.x;
   physics.position.y = coord.y;
   physics.velocity.x = -0.5;
-  
+  physics.vector = coord.pipeVector;
+
   var graphics = new graphicsComponent.PipeGraphicsComponent(this);
   var collision = new collisionComponent.RectCollisionComponent(this, physics.size);
   collision.onCollision = this.onCollision.bind(this);

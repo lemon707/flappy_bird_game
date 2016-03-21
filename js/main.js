@@ -32,6 +32,7 @@ var playBtn = document.getElementsByClassName('startGame')[0],
         }
     },
     toggleSound = function() {
+        console.log('mute',mute)
         mute = !mute;
         if(mute === true) {
             soundMuteIcon.style.display = 'block';
@@ -50,7 +51,6 @@ var playBtn = document.getElementsByClassName('startGame')[0],
 
 soundControl.addEventListener('click', function(e) {
     e.preventDefault();
-    mute = true;
     toggleSound();
 });
 
