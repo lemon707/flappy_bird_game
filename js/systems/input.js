@@ -3,9 +3,9 @@ var InputSystem = function(entities) {
   this.canvas = document.getElementById('main-canvas');
 };
 
-InputSystem.prototype.run = function() {
+InputSystem.prototype.run = function(event) {
   this.canvas.addEventListener('click', this.onClick.bind(this));
-  // this.canvas.addEventListener('touchstart', this.onClickMobile.bind(this));
+  this.canvas.addEventListener('touchstart', this.onTap.bind(this), false);
 };
 
 InputSystem.prototype.pause = function() {
@@ -17,10 +17,10 @@ InputSystem.prototype.onClick = function() {
   bird.components.physics.velocity.y = 0.7;
 };
 
-//does not currently work
-InputSystem.prototype.onClickMobile = function(e) {
-  e.preventDefault();
-  console.log('touched');
-};
+InputSystem.prototype.onTap = function(event) {
+  event.preventDefault();
+  var bird = this.entities[0];
+  bird.components.physics.velocity.y = 0.7;
+}
 
 exports.InputSystem = InputSystem;
