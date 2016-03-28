@@ -3,6 +3,7 @@ var physicsComponent = require("../components/physics/physics");
 var collisionComponent = require("../components/collision/circle");
 var removalComponent = require("../components/removal/removal");
 var userInterfaceComponent = require("../components/ui/ui");
+var soundComponent = require("../components/sound/sound");
 var settings = require("../settings");
 
 var Coin = function(coord) {
@@ -16,6 +17,7 @@ var Coin = function(coord) {
   collision.onCollision = this.onCollision.bind(this);
   var removal = new removalComponent.RemovalComponent(this);
   var ui = new userInterfaceComponent.UserInterfaceComponent(this);
+  var sound = new soundComponent.SoundComponent(this);
 
   this.type = 'coin';
 
@@ -24,7 +26,8 @@ var Coin = function(coord) {
     physics: physics,
     collision: collision,
     removal: removal,
-    ui: ui
+    ui: ui,
+    sound: sound
   };
 };
 

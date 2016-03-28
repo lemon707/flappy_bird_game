@@ -21,6 +21,6 @@ InputSystem.prototype.onTap = function(event) {
   event.preventDefault();
   var bird = this.entities[0];
   bird.components.physics.velocity.y = 0.7;
-}
+};
 
 exports.InputSystem = InputSystem;

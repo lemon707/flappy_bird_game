@@ -251,13 +251,20 @@ var RemovalComponent = function(entity) {
 
 exports.RemovalComponent = RemovalComponent;
 },{}],10:[function(require,module,exports){
+var SoundComponent = function(entity) {
+  this.entity = entity;
+  this.birdFlownThrough = false;
+};
+
+exports.SoundComponent = SoundComponent;
+},{}],11:[function(require,module,exports){
 var UserInterfaceComponent = function(entity) {
   this.entity = entity;
   this.birdFlownThrough = false;
 };
 
 exports.UserInterfaceComponent = UserInterfaceComponent;
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 var graphicsComponent = require("../components/graphics/bird");
 var physicsComponent = require("../components/physics/physics");
 var collisionComponent = require("../components/collision/circle");
@@ -303,12 +310,13 @@ Bird.prototype.onCollision = function(entity) {
 };
 
 exports.Bird = Bird;
-},{"../components/collision/circle":1,"../components/graphics/bird":3,"../components/physics/physics":8,"../settings":18}],12:[function(require,module,exports){
+},{"../components/collision/circle":1,"../components/graphics/bird":3,"../components/physics/physics":8,"../settings":19}],13:[function(require,module,exports){
 var graphicsComponent = require("../components/graphics/coin");
 var physicsComponent = require("../components/physics/physics");
 var collisionComponent = require("../components/collision/circle");
 var removalComponent = require("../components/removal/removal");
 var userInterfaceComponent = require("../components/ui/ui");
+var soundComponent = require("../components/sound/sound");
 var settings = require("../settings");
 
 var Coin = function(coord) {
@@ -322,6 +330,7 @@ var Coin = function(coord) {
   collision.onCollision = this.onCollision.bind(this);
   var removal = new removalComponent.RemovalComponent(this);
   var ui = new userInterfaceComponent.UserInterfaceComponent(this);
+  var sound = new soundComponent.SoundComponent(this);
 
   this.type = 'coin';
 
@@ -330,7 +339,8 @@ var Coin = function(coord) {
     physics: physics,
     collision: collision,
     removal: removal,
-    ui: ui
+    ui: ui,
+    sound: sound
   };
 };
 
@@ -338,12 +348,13 @@ Coin.prototype.onCollision = function(entity) {
 };
 
 exports.Coin = Coin;
-},{"../components/collision/circle":1,"../components/graphics/coin":4,"../components/physics/physics":8,"../components/removal/removal":9,"../components/ui/ui":10,"../settings":18}],13:[function(require,module,exports){
+},{"../components/collision/circle":1,"../components/graphics/coin":4,"../components/physics/physics":8,"../components/removal/removal":9,"../components/sound/sound":10,"../components/ui/ui":11,"../settings":19}],14:[function(require,module,exports){
 var graphicsComponent = require("../components/graphics/pipe");
 var physicsComponent = require("../components/physics/physics");
 var collisionComponent = require("../components/collision/rect");
 var removalComponent = require("../components/removal/removal");
 var userInterfaceComponent = require("../components/ui/ui");
+var soundComponent = require("../components/sound/sound");
 var settings = require("../settings");
 
 var Pipe = function (coord) {
@@ -362,6 +373,7 @@ var Pipe = function (coord) {
   collision.onCollision = this.onCollision.bind(this);
   var removal = new removalComponent.RemovalComponent(this);
   var ui = new userInterfaceComponent.UserInterfaceComponent(this);
+  var sound = new soundComponent.SoundComponent(this);
 
   this.type = 'pipe';
   
@@ -370,7 +382,8 @@ var Pipe = function (coord) {
     physics: physics,
     collision: collision,
     removal: removal,
-    ui: ui
+    ui: ui,
+    sound: sound
   };
 };
 
@@ -383,7 +396,7 @@ Pipe.prototype.onCollision = function(entity) {
 
 exports.Pipe = Pipe;
 
-},{"../components/collision/rect":2,"../components/graphics/pipe":5,"../components/physics/physics":8,"../components/removal/removal":9,"../components/ui/ui":10,"../settings":18}],14:[function(require,module,exports){
+},{"../components/collision/rect":2,"../components/graphics/pipe":5,"../components/physics/physics":8,"../components/removal/removal":9,"../components/sound/sound":10,"../components/ui/ui":11,"../settings":19}],15:[function(require,module,exports){
 var graphicsComponent = require("../components/graphics/plate");
 var physicsComponent = require("../components/physics/physics");
 var collisionComponent = require("../components/collision/rect");
@@ -414,7 +427,7 @@ Plate.prototype.onCollision = function(entity) {
 };
 
 exports.Plate = Plate;
-},{"../components/collision/rect":2,"../components/graphics/plate":6,"../components/physics/physics":8,"../settings":18}],15:[function(require,module,exports){
+},{"../components/collision/rect":2,"../components/graphics/plate":6,"../components/physics/physics":8,"../settings":19}],16:[function(require,module,exports){
 var graphicsComponent = require("../components/graphics/wall");
 var physicsComponent = require("../components/physics/physics");
 var collisionComponent = require("../components/collision/rect");
@@ -447,7 +460,7 @@ Wall.prototype.onCollision = function(entity) {
 };
 
 exports.Wall = Wall;
-},{"../components/collision/rect":2,"../components/graphics/wall":7,"../components/physics/physics":8,"../settings":18}],16:[function(require,module,exports){
+},{"../components/collision/rect":2,"../components/graphics/wall":7,"../components/physics/physics":8,"../settings":19}],17:[function(require,module,exports){
 var graphicsSystem = require('./systems/graphics');
 var physicsSystem = require('./systems/physics');
 var inputSystem = require('./systems/input');
@@ -496,7 +509,7 @@ FlappyBird.prototype.run = function() {
 };
 
 exports.FlappyBird = FlappyBird;
-},{"./entities/bird":11,"./entities/coin":12,"./entities/pipe":13,"./entities/plate":14,"./entities/wall":15,"./systems/graphics":20,"./systems/input":21,"./systems/physics":22}],17:[function(require,module,exports){
+},{"./entities/bird":12,"./entities/coin":13,"./entities/pipe":14,"./entities/plate":15,"./entities/wall":16,"./systems/graphics":21,"./systems/input":22,"./systems/physics":23}],18:[function(require,module,exports){
 var flappyBird = require('./flappy_bird');
 
 var app = new flappyBird.FlappyBird();
@@ -615,11 +628,11 @@ restartBtn.addEventListener('click', function(e) {
 
 //show highest score by accessing localstorage and taking Math.max of array
 // highestScore = 
-},{"./flappy_bird":16}],18:[function(require,module,exports){
+},{"./flappy_bird":17}],19:[function(require,module,exports){
 //toggle sound
 //adjust velocity
 
-},{}],19:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 var CollisionSystem = function(entities) {
   this.entities = entities;
 };
@@ -649,7 +662,7 @@ CollisionSystem.prototype.tick = function() {
 };
 
 exports.CollisionSystem = CollisionSystem;
-},{}],20:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 var GraphicsSystem = function(entities) {
   this.entities = entities;
   this.canvas = document.getElementById('main-canvas');
@@ -695,7 +708,7 @@ GraphicsSystem.prototype.tick = function() {
 };
 
 exports.GraphicsSystem = GraphicsSystem;
-},{}],21:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 var InputSystem = function(entities) {
   this.entities = entities;
   this.canvas = document.getElementById('main-canvas');
@@ -719,12 +732,13 @@ InputSystem.prototype.onTap = function(event) {
   event.preventDefault();
   var bird = this.entities[0];
   bird.components.physics.velocity.y = 0.7;
-}
+};
 
 exports.InputSystem = InputSystem;
 
-},{}],22:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 var collisionSystem = require('./collision');
+var soundSystem = require('./sound');
 var removalSystem = require('./removal');
 var userInterfaceSystem = require('./ui');
 var intervalID;
@@ -732,6 +746,7 @@ var intervalID;
 var PhysicsSystem = function(entities) {
   this.entities = entities;
   this.collisionSystem = new collisionSystem.CollisionSystem(entities);
+  this.soundSystem = new soundSystem.SoundSystem(entities);
   this.removalSystem = new removalSystem.RemovalSystem(entities);
   this.userInterfaceSystem = new userInterfaceSystem.UserInterfaceSystem(entities);
 };
@@ -753,13 +768,14 @@ PhysicsSystem.prototype.tick = function() {
     entity.components.physics.update(1/60);
   }
   this.collisionSystem.tick();
+  this.soundSystem.tick();
   this.userInterfaceSystem.tick();
   this.removalSystem.tick();
 };
 
 exports.PhysicsSystem = PhysicsSystem;
 
-},{"./collision":19,"./removal":23,"./ui":24}],23:[function(require,module,exports){
+},{"./collision":20,"./removal":24,"./sound":25,"./ui":26}],24:[function(require,module,exports){
 var RemovalSystem = function(entities) {
   this.entities = entities;
 };
@@ -793,25 +809,17 @@ RemovalSystem.prototype.removeAllOfType = function(type) {
 };
 
 exports.RemovalSystem = RemovalSystem;
-},{}],24:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 var gameSoundControl = document.getElementsByClassName('soundControl')[0];
 var gameSoundMuteIcon = document.getElementsByClassName('fa-ban')[0];
 var coinSound = new Audio('./sound/coin.wav');
 var bumpSound = new Audio('./sound/bump.wav');
 var endSound = new Audio('./sound/game-over.mp3');
 var mute = false;
-var restartBtn = document.getElementsByClassName('restartGame')[0];
-var endText = document.getElementsByClassName('endText')[0];
 
 coinSound.volume = 0.5;
 bumpSound.volume = 0.5;
 endSound.volume = 0.5;
-
-var UserInterfaceSystem = function(entities) {
-  this.entities = entities;
-  this.score = 0;
-  this.life = 3;
-};
 
 var toggleGameSound = function() {
     mute = !mute;
@@ -833,6 +841,54 @@ gameSoundControl.addEventListener('click', function(e) {
     toggleGameSound();
 });
 
+var SoundSystem = function(entities) {
+  this.entities = entities;
+  this.life = 3;
+};
+
+SoundSystem.prototype.tick = function() {
+  for(var i = 0; i < this.entities.length; i += 1) {
+      var entity = this.entities[i];
+      if(!entity.components.hasOwnProperty('sound')) {
+        continue;
+      }
+      if(entity.components.ui.birdFlownThrough === true) {
+        if(entity.type === 'pipe') {
+          this.fail();
+          if(this.life === 0) {
+            this.endGame();
+          }
+        }
+        if(entity.type === 'coin') {
+          this.success();
+        }
+      }
+  }
+};
+
+SoundSystem.prototype.success = function() {
+  coinSound.play();
+};
+
+SoundSystem.prototype.fail = function() {
+  this.life -= 1;
+  bumpSound.play();
+};
+
+SoundSystem.prototype.endGame = function() {
+  endSound.play();
+};
+
+exports.SoundSystem = SoundSystem;
+},{}],26:[function(require,module,exports){
+var restartBtn = document.getElementsByClassName('restartGame')[0];
+var endText = document.getElementsByClassName('endText')[0];
+
+var UserInterfaceSystem = function(entities) {
+  this.entities = entities;
+  this.score = 0;
+  this.life = 3;
+};
 
 UserInterfaceSystem.prototype.tick = function() {
   for(var i = 0; i < this.entities.length; i += 1) {
@@ -856,22 +912,19 @@ UserInterfaceSystem.prototype.tick = function() {
 };
 
 UserInterfaceSystem.prototype.success = function() {
-  coinSound.play();
   this.score += 1;
   document.getElementsByClassName('score')[0].innerHTML = this.score;
 };
 
 UserInterfaceSystem.prototype.fail = function() {
-  bumpSound.play();
   this.life -= 1;
   document.getElementsByClassName('life')[0].innerHTML = this.life;
 };
 
 UserInterfaceSystem.prototype.endGame = function() {
-  endSound.play();
   endText.style.display = 'block';
   restartBtn.style.display = 'block';
 };
 
 exports.UserInterfaceSystem = UserInterfaceSystem;
-},{}]},{},[17]);
+},{}]},{},[18]);
