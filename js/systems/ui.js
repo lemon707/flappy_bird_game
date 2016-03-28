@@ -1,5 +1,5 @@
-var restartBtn = document.getElementsByClassName('restartGame')[0];
-var endText = document.getElementsByClassName('endText')[0];
+var restartBtn = document.getElementsByClassName('restart-game')[0];
+var endText = document.getElementsByClassName('end-text')[0];
 
 var UserInterfaceSystem = function(entities) {
   this.entities = entities;

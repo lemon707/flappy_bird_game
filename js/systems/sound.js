@@ -1,4 +1,4 @@
-var gameSoundControl = document.getElementsByClassName('soundControl')[0];
+var gameSoundControl = document.getElementsByClassName('sound-control')[0];
 var gameSoundMuteIcon = document.getElementsByClassName('fa-ban')[0];
 var coinSound = new Audio('./sound/coin.wav');
 var bumpSound = new Audio('./sound/bump.wav');
@@ -12,12 +12,12 @@ endSound.volume = 0.5;
 var toggleGameSound = function() {
     mute = !mute;
     if(mute === true) {
-        gameSoundControl.style.display = 'block';
+        gameSoundMuteIcon.style.display = 'block';
         coinSound.volume = 0;
         bumpSound.volume = 0;
         endSound.volume = 0;
     } else {
-        gameSoundControl.style.display = 'none';
+        gameSoundMuteIcon.style.display = 'none';
         coinSound.volume = 0.5;
         bumpSound.volume = 0.5;
         endSound.volume = 0.5;

@@ -514,18 +514,18 @@ var flappyBird = require('./flappy_bird');
 
 var app = new flappyBird.FlappyBird();
 
-var playBtn = document.getElementsByClassName('startGame')[0],
+var playBtn = document.getElementsByClassName('start-game')[0],
     playSound = new Audio('./sound/start-music.mp3'),
     soundMuteIcon = document.getElementsByClassName('fa-ban')[0],
     instructionText = document.getElementsByClassName('instruction'),
-    soundControl = document.getElementsByClassName('soundControl')[0],
-    pauseText = document.getElementsByClassName('pauseText')[0],
-    restartBtn = document.getElementsByClassName('restartGame')[0],
+    soundControl = document.getElementsByClassName('sound-control')[0],
+    pauseText = document.getElementsByClassName('pause-text')[0],
+    restartBtn = document.getElementsByClassName('restart-game')[0],
     coinImg = document.getElementsByClassName('img_coin_start_image')[0],
     birdImg = document.getElementsByClassName('img_start_image_bird')[0],
     gameTitle = document.getElementsByClassName('game-title')[0],
     numCounter = document.getElementsByClassName('counter')[0],
-    highestScore = document.getElementsByClassName('highestScore')[0],
+    highestScore = document.getElementsByClassName('highest-score')[0],
     counter = 2,
     mute = false,
     paused = false,
@@ -578,15 +578,13 @@ var playBtn = document.getElementsByClassName('startGame')[0],
         birdImg.style.display = 'none';
         coinImg.style.display = 'none';
         gameTitle.style.display = 'none';
-        instructionText[0].style.display = 'none';
-        instructionText[1].style.display = 'none';
         numCounter.style.display = 'block';
         window.setInterval(function(){
             countDown();
             if(counter === 0) {
+                numCounter.style.display = 'none';
                 numCounter.innerHTML = 'START!';
                 window.setTimeout(function(){
-                    numCounter.style.display = 'none';
                     app.run();
                 },1000);
             }
@@ -810,7 +808,7 @@ RemovalSystem.prototype.removeAllOfType = function(type) {
 
 exports.RemovalSystem = RemovalSystem;
 },{}],25:[function(require,module,exports){
-var gameSoundControl = document.getElementsByClassName('soundControl')[0];
+var gameSoundControl = document.getElementsByClassName('sound-control')[0];
 var gameSoundMuteIcon = document.getElementsByClassName('fa-ban')[0];
 var coinSound = new Audio('./sound/coin.wav');
 var bumpSound = new Audio('./sound/bump.wav');
@@ -824,12 +822,12 @@ endSound.volume = 0.5;
 var toggleGameSound = function() {
     mute = !mute;
     if(mute === true) {
-        gameSoundControl.style.display = 'block';
+        gameSoundMuteIcon.style.display = 'block';
         coinSound.volume = 0;
         bumpSound.volume = 0;
         endSound.volume = 0;
     } else {
-        gameSoundControl.style.display = 'none';
+        gameSoundMuteIcon.style.display = 'none';
         coinSound.volume = 0.5;
         bumpSound.volume = 0.5;
         endSound.volume = 0.5;
@@ -881,8 +879,8 @@ SoundSystem.prototype.endGame = function() {
 
 exports.SoundSystem = SoundSystem;
 },{}],26:[function(require,module,exports){
-var restartBtn = document.getElementsByClassName('restartGame')[0];
-var endText = document.getElementsByClassName('endText')[0];
+var restartBtn = document.getElementsByClassName('restart-game')[0];
+var endText = document.getElementsByClassName('end-text')[0];
 
 var UserInterfaceSystem = function(entities) {
   this.entities = entities;

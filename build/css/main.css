@@ -23,14 +23,14 @@ canvas#main-canvas {
     background-size: cover;
 }     
 
-.gameInterface {
+.game-interface-main {
     line-height: 1.7;
     position: absolute;
     top: 50px;
     right: 50px;
 }
 
-.gameInterface2 {
+.game-interface-instructions {
     line-height: 1.7;
     position: absolute;
     top: 50px;
@@ -74,12 +74,12 @@ canvas#main-canvas {
     white-space: nowrap;
 }
 
-.startGame {
+.start-game {
     background-color: #fff;
     border: none;
 }
 
-.pauseText, .endText {
+.pause-text, .end-text {
     position: absolute;
     font-size: 80px;
     top: 25%;
@@ -87,7 +87,7 @@ canvas#main-canvas {
     transform: translate(-50%,-50%);
 }
 
-.counter, .pauseText, .endText, .restartGame {
+.counter, .pause-text, .end-text, .restart-game {
     display: none;
 }
 
@@ -114,7 +114,7 @@ canvas#main-canvas {
     .center {
         font-size: 15px;
     }
-    .game-title, .pauseText {
+    .game-title, .pause-text {
         font-size: 50px;
     }
 }
