@@ -60,6 +60,7 @@ var playBtn = document.getElementsByClassName('start-game')[0],
 
     function startNewGame(e) {
         e.preventDefault();
+        e.stopPropagation();
         playSound.pause();
         playSound.currentTime = 0;
         this.style.display = 'none';
