@@ -582,9 +582,9 @@ var playBtn = document.getElementsByClassName('start-game')[0],
         window.setInterval(function(){
             countDown();
             if(counter === 0) {
-                numCounter.style.display = 'none';
                 numCounter.innerHTML = 'START!';
                 window.setTimeout(function(){
+                    numCounter.style.display = 'none';
                     app.run();
                 },1000);
             }
