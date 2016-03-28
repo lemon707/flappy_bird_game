@@ -23,7 +23,6 @@ var Bird = function(coord) {
 };
 
 Bird.prototype.onCollision = function(entity) {
-  //reset bird position to center and remove current pipes
   if(entity.components.hasOwnProperty('removal')) {
     if(entity.type === 'pipe') {
       entity.components.removal.toRemoveAllOfType = true;
@@ -35,11 +34,10 @@ Bird.prototype.onCollision = function(entity) {
   if(entity.components.hasOwnProperty('ui')) {
     entity.components.ui.birdFlownThrough = true;
   }
-  this.components.physics.position.x = 0;
-  this.components.physics.position.y = 0.5;
-  this.components.physics.velocity.y = 0;
-  this.components.physics.acceleration.y = -2;
-  
+  if(entity.type === 'plate') {
+    this.components.physics.position.y = 0.5;
+    this.components.physics.velocity.y = 0;
+  }
 };
 
 exports.Bird = Bird;

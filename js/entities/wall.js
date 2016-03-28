@@ -16,6 +16,8 @@ var Wall = function(coord) {
   var collision = new collisionComponent.RectCollisionComponent(this, physics.size);
   collision.onCollision = this.onCollision.bind(this);
 
+  this.type = 'wall';
+  
   this.components = {
     graphics: graphics,
     physics: physics,

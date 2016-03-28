@@ -16,6 +16,8 @@ var Plate = function(coord) {
   var collision = new collisionComponent.RectCollisionComponent(this, physics.size);
   collision.onCollision = this.onCollision.bind(this);
 
+  this.type = 'plate';
+  
   this.components = {
     graphics: graphics,
     physics: physics,
